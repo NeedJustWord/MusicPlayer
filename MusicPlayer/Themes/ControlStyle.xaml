@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Control.Button.xaml"/>
+        <ResourceDictionary Source="Control.DataGrid.xaml"/>
+        <ResourceDictionary Source="Control.ScrollBar.xaml"/>
+        <ResourceDictionary Source="Control.Slider.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

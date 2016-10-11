@@ -1,0 +1,156 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:MusicPlayer.Controls"
+                    xmlns:converters="clr-namespace:MusicPlayer.Converters">
+    <converters:BitmapSourceConverter x:Key="BitmapSourceConverter"/>
+    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <converters:MarginConverter x:Key="MarginConverter"/>
+    <converters:ThicknessConverter x:Key="ThicknessConverter"/>
+
+    <Style x:Key="SliderButtonStyle" TargetType="{x:Type RepeatButton}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="IsTabStop" Value="false" />
+        <Setter Property="Focusable" Value="false" />
+    </Style>
+    <Style x:Key="SliderLeftButtonStyle" TargetType="RepeatButton" BasedOn="{StaticResource SliderButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Border Margin="{Binding Path=(controls:BaseSlider.IsShowBorder),Converter={StaticResource MarginConverter},ConverterParameter=Left,RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}"
+                            Background="{Binding Path=(controls:BaseSlider.LeftBrush),RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="SliderRightButtonStyle" TargetType="RepeatButton" BasedOn="{StaticResource SliderButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Border Margin="{Binding Path=(controls:BaseSlider.IsShowBorder),Converter={StaticResource MarginConverter},ConverterParameter=Right,RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}"
+                            Background="{Binding Path=(controls:BaseSlider.RightBrush),RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="SliderDownButtonStyle" TargetType="RepeatButton" BasedOn="{StaticResource SliderButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Border Margin="{Binding Path=(controls:BaseSlider.IsShowBorder),Converter={StaticResource MarginConverter},ConverterParameter=Down,RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}"
+                            Background="{Binding Path=(controls:BaseSlider.LeftBrush),RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="SliderUpButtonStyle" TargetType="RepeatButton" BasedOn="{StaticResource SliderButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Border Margin="{Binding Path=(controls:BaseSlider.IsShowBorder),Converter={StaticResource MarginConverter},ConverterParameter=Up,RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}"
+                            Background="{Binding Path=(controls:BaseSlider.RightBrush),RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SliderThumbStyle" TargetType="{x:Type Thumb}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="Height" Value="{Binding Path=(controls:BaseSlider.ThumbImage),Converter={StaticResource BitmapSourceConverter},ConverterParameter=Height,RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}" />
+        <Setter Property="Width" Value="{Binding Path=(controls:BaseSlider.ThumbImage),Converter={StaticResource BitmapSourceConverter},ConverterParameter=Width,RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Image Source="{Binding Path=(controls:BaseSlider.ThumbImage),RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="HorizontalSlider" TargetType="controls:BaseSlider">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" MinHeight="{TemplateBinding MinHeight}" />
+            </Grid.RowDefinitions>
+            <Border x:Name="TrackBackground" Margin="2" Visibility="{TemplateBinding IsShowBorder,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter={x:Static Visibility.Visible}}" Height="{TemplateBinding Thickness}" BorderThickness="1" BorderBrush="{TemplateBinding ActualBorderBrush}" Background="Transparent">
+            </Border>
+            <Track x:Name="PART_Track">
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton x:Name="LeftButton" Style="{StaticResource SliderLeftButtonStyle}" Command="Slider.DecreaseLarge"/>
+                </Track.DecreaseRepeatButton>
+                <Track.Thumb>
+                    <Thumb Style="{StaticResource SliderThumbStyle}" />
+                </Track.Thumb>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton x:Name="RightButton" Style="{StaticResource SliderRightButtonStyle}" Command="Slider.IncreaseLarge" />
+                </Track.IncreaseRepeatButton>
+            </Track>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsShowBorder" Value="True">
+                <Setter Property="Height" TargetName="LeftButton" Value="{Binding Path=Thickness,Converter={StaticResource ThicknessConverter},RelativeSource={RelativeSource TemplatedParent}}"/>
+                <Setter Property="Height" TargetName="RightButton" Value="{Binding Path=Thickness,Converter={StaticResource ThicknessConverter},RelativeSource={RelativeSource TemplatedParent}}"/>
+            </Trigger>
+            <Trigger Property="IsShowBorder" Value="False">
+                <Setter Property="Height" TargetName="LeftButton" Value="{Binding Path=Thickness,RelativeSource={RelativeSource TemplatedParent}}"/>
+                <Setter Property="Height" TargetName="RightButton" Value="{Binding Path=Thickness,RelativeSource={RelativeSource TemplatedParent}}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <ControlTemplate x:Key="VerticalSlider" TargetType="controls:BaseSlider">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="{TemplateBinding MinWidth}" />
+            </Grid.ColumnDefinitions>
+            <Border x:Name="TrackBackground" Margin="2" Visibility="{TemplateBinding IsShowBorder,Converter={StaticResource BoolToVisibilityConverter},ConverterParameter={x:Static Visibility.Visible}}" Width="{TemplateBinding Thickness}" BorderThickness="1" BorderBrush="{TemplateBinding ActualBorderBrush}" Background="Transparent">
+            </Border>
+            <Track x:Name="PART_Track">
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton x:Name="UpButton" Style="{StaticResource SliderDownButtonStyle}" Command="Slider.DecreaseLarge" />
+                </Track.DecreaseRepeatButton>
+                <Track.Thumb>
+                    <Thumb Style="{StaticResource SliderThumbStyle}" />
+                </Track.Thumb>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton x:Name="DownButton" Style="{StaticResource SliderUpButtonStyle}" Command="Slider.IncreaseLarge" />
+                </Track.IncreaseRepeatButton>
+            </Track>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsShowBorder" Value="True">
+                <Setter Property="Width" TargetName="UpButton" Value="{Binding Path=Thickness,Converter={StaticResource ThicknessConverter},RelativeSource={RelativeSource TemplatedParent}}"/>
+                <Setter Property="Width" TargetName="DownButton" Value="{Binding Path=Thickness,Converter={StaticResource ThicknessConverter},RelativeSource={RelativeSource TemplatedParent}}"/>
+            </Trigger>
+            <Trigger Property="IsShowBorder" Value="False">
+                <Setter Property="Width" TargetName="UpButton" Value="{Binding Path=Thickness,RelativeSource={RelativeSource TemplatedParent}}"/>
+                <Setter Property="Width" TargetName="DownButton" Value="{Binding Path=Thickness,RelativeSource={RelativeSource TemplatedParent}}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="BaseSliderStyle" TargetType="controls:BaseSlider">
+        <Setter Property="IsMoveToPointEnabled" Value="True"/>
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="IsShowBorder" Value="True"/>
+        <Setter Property="Thickness" Value="3"/>
+        <Setter Property="ActualBorderBrush" Value="#2d2d2e"/>
+        <Setter Property="LeftBrush" Value="#a0a0a0"/>
+        <Setter Property="RightBrush" Value="#505050"/>
+        <Setter Property="ThumbImage" Value="/Images/VolumeSliderThumb.png"/>
+        <Setter Property="IsPlayProgress" Value="False"/>
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Horizontal">
+                <Setter Property="MinWidth" Value="50" />
+                <Setter Property="MinHeight" Value="3" />
+                <Setter Property="Template" Value="{StaticResource HorizontalSlider}" />
+            </Trigger>
+            <Trigger Property="Orientation" Value="Vertical">
+                <Setter Property="MinWidth" Value="3" />
+                <Setter Property="MinHeight" Value="50" />
+                <Setter Property="Template" Value="{StaticResource VerticalSlider}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,190 @@
+﻿<controls:BaseWindow x:Class="MusicPlayer.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:MusicPlayer.Controls"
+        xmlns:models="clr-namespace:MusicPlayer.Models"
+        xmlns:musicPlayer="clr-namespace:MusicPlayer"
+        mc:Ignorable="d"
+        Style="{StaticResource MainWindowStyle}"
+        DataContext="{Binding MainWindowVm,Source={StaticResource Locator}}"
+        WindowStartupLocation="Manual"
+        Top="{Binding ConfigInfo.Top,Mode=TwoWay}"
+        Left="{Binding ConfigInfo.Left,Mode=TwoWay}"
+        Width="{Binding ConfigInfo.Width,Mode=TwoWay}"
+        Height="{Binding ConfigInfo.Height,Mode=TwoWay}"
+        Opacity="{Binding ConfigInfo.Opacity,Mode=TwoWay}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding WindowClosingCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid Style="{StaticResource MainGridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 信息展示 -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Row="0" Grid.Column="0" Style="{StaticResource AlbumStyle}" />
+
+            <Canvas Grid.Row="0" Grid.Column="1">
+                <TextBlock Canvas.Top="10" Style="{StaticResource MusicNameStyle}" Text="{Binding ConfigInfo.MusicName}"/>
+                <TextBlock Canvas.Top="30" Style="{StaticResource SingerStyle}" Text="{Binding ConfigInfo.Singer}"/>
+                <controls:BaseButton Canvas.Top="10" Canvas.Right="10" Style="{StaticResource SkinIconStyle}"/>
+                <TextBlock Canvas.Right="10" Canvas.Bottom="0" Style="{StaticResource MusicTimeStyle}" Text="{Binding ConfigInfo.MusicTime}"/>
+            </Canvas>
+        </Grid>
+
+        <!-- 播放控制 -->
+        <Grid Grid.Row="1" Style="{StaticResource PlayControlStyle}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <controls:BaseSlider x:Name="MusicSlider" Style="{StaticResource MusicSliderStyle}" Minimum="0" Maximum="{Binding ConfigInfo.TimeLength,Converter={StaticResource TimeLengthConverter}}" Value="{Binding ConfigInfo.Position,Converter={StaticResource TimeSpanConverter}}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="ValueChanged">
+                        <i:InvokeCommandAction Command="{Binding PlayProgressChangedCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </controls:BaseSlider>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,1,0,1">
+                <controls:BaseButton Style="{StaticResource BtnStopStyle}" Command="{Binding StopCommand}"/>
+                <controls:BaseButton Style="{StaticResource BtnPrevStyle}" Command="{Binding PrevCommand}"/>
+                <controls:BaseButton Style="{StaticResource BtnPlayPauseStyle}" Command="{Binding PlayPauseCommand}" CommandParameter="{x:Null}"
+                                     NormalImage="{Binding Path=ConfigInfo.PlayStatus,Converter={StaticResource PlayStatusToImageConverter},ConverterParameter=Button}"/>
+                <controls:BaseButton Style="{StaticResource BtnNextStyle}" Command="{Binding NextCommand}"/>
+                <controls:BaseButton Style="{StaticResource BtnMuteStyle}" Command="{Binding MuteCommand}" NormalImage="{Binding ConfigInfo.IsMuted,Converter={StaticResource BoolToImageSourceConverter}}"/>
+                <controls:BaseSlider Style="{StaticResource VolumeSliderStyle}" Minimum="0" Maximum="1" Value="{Binding ConfigInfo.Volume,Mode=TwoWay}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="ValueChanged">
+                            <i:InvokeCommandAction Command="{Binding VolumeChangedCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </controls:BaseSlider>
+            </StackPanel>
+        </Grid>
+
+        <!-- 分割线 -->
+        <StackPanel Grid.Row="2" Orientation="Vertical">
+            <Border Height="1" Background="#4a4a4c" />
+        </StackPanel>
+
+        <!-- 音乐列表 -->
+        <DataGrid Name="MusicList"
+                  Grid.Row="3"
+                  Style="{StaticResource MusicListStyle}"
+                  ItemsSource="{Binding MusicInfoList}"
+                  MouseUp="MusicList_MouseUp">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="序号" Width="27" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="models:MusicInfo">
+                            <StackPanel Width="27">
+                                <Image Width="21" Height="20" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                       Source="{Binding Path=PlayStatus,Converter={StaticResource PlayStatusToImageConverter},ConverterParameter=GridView}"
+                                       Visibility="{Binding Path=PlayStatus,Converter={StaticResource PlayStatusToVisibilityConverter},ConverterParameter={x:Static Visibility.Collapsed}}"
+                                       />
+                                <TextBlock Margin="3,0,3,0" Text="{Binding Path=RowNum,Converter={StaticResource IntFormatConverter}}"
+                                           Visibility="{Binding Path=PlayStatus,Converter={StaticResource PlayStatusToVisibilityConverter},ConverterParameter={x:Static Visibility.Visible}}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="歌名" Binding="{Binding Path=MusicName}" Width="*"/>
+                <DataGridTextColumn Header="歌手" Binding="{Binding Path=Singer,Converter={StaticResource SubStringConverter}}" Width="60"/>
+            </DataGrid.Columns>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding SetSelectedStatusCommand}" CommandParameter="{Binding SelectedItems,ElementName=MusicList}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding PlayPauseCommand}" CommandParameter="{Binding SelectedItem,ElementName=MusicList}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </DataGrid>
+
+        <!-- 菜单 -->
+        <Border Grid.Row="4" Style="{StaticResource MenuBorderStyle}">
+            <StackPanel Orientation="Horizontal">
+                <controls:MenuButton Style="{StaticResource BtnAddStyle}">
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="添加本地歌曲文件" Command="{Binding AddMusicFileCommand}"/>
+                            <MenuItem Header="添加本地歌曲目录" Command="{Binding AddMusicFolderCommand}"/>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </controls:MenuButton>
+
+                <controls:MenuButton Style="{StaticResource BtnDeleteStyle}">
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="删除所选歌曲" Command="{Binding DeleteSelectMusicCommand}" IsEnabled="{Binding MusicInfoList,Converter={StaticResource ObservableCollectionToEnabledConverter}}"/>
+                            <MenuItem Header="删除重复歌曲" Command="{Binding DeleteRepeatMusicCommand}" IsEnabled="{Binding MusicInfoList.Count}"/>
+                            <MenuItem Header="删除错误歌曲" Command="{Binding DeleteErrorMusicCommand}" IsEnabled="{Binding MusicInfoList.Count}"/>
+                            <Separator/>
+                            <MenuItem Header="清空列表" Command="{Binding ClearMusicListCommand}" IsEnabled="{Binding MusicInfoList.Count}"/>
+                            <MenuItem Header="高级删除" >
+                                <MenuItem Header="按添加时间">
+                                    <MenuItem Header="删除一天前添加的" Command="{Binding DeleteLastDayAddMusicCommand}" IsEnabled="{Binding MusicInfoList.Count}"/>
+                                    <MenuItem Header="删除一周前添加的" Command="{Binding DeleteLastWeekAddMusicCommand}" IsEnabled="{Binding MusicInfoList.Count}"/>
+                                    <MenuItem Header="删除一个月前添加的" Command="{Binding DeleteLastMonthAddMusicCommand}" IsEnabled="{Binding MusicInfoList.Count}"/>
+                                </MenuItem>
+                                <MenuItem Header="按播放次数">
+                                    <MenuItem Header="删除未播放过的" Command="{Binding DeleteNeverPlayMusicCommand}" IsEnabled="{Binding MusicInfoList.Count}"/>
+                                    <MenuItem Header="删除播放过3次以下的" Command="{Binding DeletePlayThreeTimesMusicCommand}" IsEnabled="{Binding MusicInfoList.Count}"/>
+                                    <MenuItem Header="删除播放过6次以下的" Command="{Binding DeletePlaySixTimesMusicCommand}" IsEnabled="{Binding MusicInfoList.Count}"/>
+                                </MenuItem>
+                            </MenuItem>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </controls:MenuButton>
+
+                <controls:MenuButton x:Name="LookUp" Style="{StaticResource BtnLookUpStyle}"/>
+
+                <controls:MenuButton Style="{StaticResource BtnOrderStyle}" Content="{Binding ConfigInfo.PlayModeText}" NormalImage="{Binding ConfigInfo.PlayModeImage}">
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="顺序播放"
+                                      Command="{Binding SetPlayModeCommand}" CommandParameter="{x:Static musicPlayer:PlayMode.SequentialPlay}"
+                                      IsChecked="{Binding ConfigInfo.PlayMode,Converter={StaticResource PlayModeToBoolConverter},ConverterParameter={x:Static musicPlayer:PlayMode.SequentialPlay}}"/>
+                            <MenuItem Header="循环播放"
+                                      Command="{Binding SetPlayModeCommand}" CommandParameter="{x:Static musicPlayer:PlayMode.LoopPlay}"
+                                      IsChecked="{Binding ConfigInfo.PlayMode,Converter={StaticResource PlayModeToBoolConverter},ConverterParameter={x:Static musicPlayer:PlayMode.LoopPlay}}"/>
+                            <MenuItem Header="随机播放"
+                                      Command="{Binding SetPlayModeCommand}" CommandParameter="{x:Static musicPlayer:PlayMode.RandomPlay}"
+                                      IsChecked="{Binding ConfigInfo.PlayMode,Converter={StaticResource PlayModeToBoolConverter},ConverterParameter={x:Static musicPlayer:PlayMode.RandomPlay}}"/>
+                            <MenuItem Header="单曲循环" 
+                                      Command="{Binding SetPlayModeCommand}" CommandParameter="{x:Static musicPlayer:PlayMode.SinglePlay}"
+                                      IsChecked="{Binding ConfigInfo.PlayMode,Converter={StaticResource PlayModeToBoolConverter},ConverterParameter={x:Static musicPlayer:PlayMode.SinglePlay}}"/>
+                            <Separator/>
+                            <MenuItem Header="排序">
+                                <MenuItem Header="按歌名排序" Command="{Binding OrderByCommand}" CommandParameter="{x:Static musicPlayer:OrderMode.MusicName}"/>
+                                <MenuItem Header="按歌手排序" Command="{Binding OrderByCommand}" CommandParameter="{x:Static musicPlayer:OrderMode.Singer}"/>
+                                <MenuItem Header="按播放次数排序" Command="{Binding OrderByCommand}" CommandParameter="{x:Static musicPlayer:OrderMode.PlayTimes}"/>
+                                <MenuItem Header="按添加时间" Command="{Binding OrderByCommand}" CommandParameter="{x:Static musicPlayer:OrderMode.AddTime}"/>
+                            </MenuItem>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </controls:MenuButton>
+            </StackPanel>
+        </Border>
+    </Grid>
+</controls:BaseWindow>

@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3ED1A0B8-BEEE-4542-86F1-5D24D4D6D17F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MusicPlayer</RootNamespace>
+    <AssemblyName>MusicPlayer</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>MusicPlayer.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19038, Culture=neutral, PublicKeyToken=0e453835af4ee6ce, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\GalaSoft.MvvmLight.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=f46ff315b1088208, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Controls\BaseButton.cs" />
+    <Compile Include="Controls\BaseSlider.cs" />
+    <Compile Include="Converters\BitmapSourceConverter.cs" />
+    <Compile Include="Converters\BoolConverter.cs" />
+    <Compile Include="Converters\FormatConverter.cs" />
+    <Compile Include="Converters\ObservableCollectionConverter.cs" />
+    <Compile Include="Converters\MarginConverter.cs" />
+    <Compile Include="Converters\OpacityConverter.cs" />
+    <Compile Include="Converters\PlayModeConverter.cs" />
+    <Compile Include="Converters\PlayStatusConverter.cs" />
+    <Compile Include="Converters\SubStringConverter.cs" />
+    <Compile Include="Converters\ThicknessConverter.cs" />
+    <Compile Include="Converters\TimeLengthConverter.cs" />
+    <Compile Include="Converters\TimeSpanConverter.cs" />
+    <Compile Include="Extensions\ObservableCollectionExtension.cs" />
+    <Compile Include="GlobalInfo.cs" />
+    <Compile Include="Helpers\MessengerHelper.cs" />
+    <Compile Include="Helpers\MusicInfoHelper.cs" />
+    <Compile Include="Helpers\RandomHelper.cs" />
+    <Compile Include="Models\ConfigInfo.cs" />
+    <Compile Include="Models\MusicInfo.cs" />
+    <Compile Include="Helpers\SerializationHelper.cs" />
+    <Compile Include="Helpers\MusicPlayHelper.cs" />
+    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Page Include="Themes\AboutWindowStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\BaseWindow.cs" />
+    <Compile Include="Helpers\XmlHelper.cs" />
+    <Compile Include="Windows\AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Themes\BaseWindowStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Control.Button.xaml">
+      <SubType>Designer</SubType>
+      <DependentUpon>ControlStyle.xaml</DependentUpon>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Control.DataGrid.xaml">
+      <SubType>Designer</SubType>
+      <DependentUpon>ControlStyle.xaml</DependentUpon>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Control.ScrollBar.xaml">
+      <SubType>Designer</SubType>
+      <DependentUpon>ControlStyle.xaml</DependentUpon>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Control.Slider.xaml">
+      <SubType>Designer</SubType>
+      <DependentUpon>ControlStyle.xaml</DependentUpon>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\ControlStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\GlobalStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\MainWindowStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\MenuButton.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Shell32">
+      <Guid>{50A7E9B0-70EF-11D1-B75A-00A0C90564FE}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\album.png" />
+    <Resource Include="Images\Close.png" />
+    <Resource Include="Images\CloseDown.png" />
+    <Resource Include="Images\CloseEnter.png" />
+    <Resource Include="Images\Menu.png" />
+    <Resource Include="Images\Min.png" />
+    <Resource Include="Images\MiniStyle.png" />
+    <Resource Include="Images\Mute.png" />
+    <Resource Include="Images\Next.png" />
+    <Resource Include="Images\Play.png" />
+    <Resource Include="Images\PauseStatus.png" />
+    <Resource Include="Images\Pause.png" />
+    <Resource Include="Images\PlayStatus.png" />
+    <Resource Include="Images\Prev.png" />
+    <Resource Include="Images\Stop.png" />
+    <Resource Include="Images\Volume.png" />
+    <Resource Include="MusicPlayer.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MusicSliderThumb.png" />
+    <Resource Include="Images\VolumeSliderThumb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SkinIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Add.png" />
+    <Resource Include="Images\Delete.png" />
+    <Resource Include="Images\Lookup.png" />
+    <Resource Include="Images\Loop.png" />
+    <Resource Include="Images\Sequential.png" />
+    <Resource Include="Images\Random.png" />
+    <Resource Include="Images\Single.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Lib\GalaSoft.MvvmLight.dll" />
+    <Content Include="Lib\GalaSoft.MvvmLight.Extras.dll" />
+    <Content Include="Lib\System.Windows.Interactivity.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

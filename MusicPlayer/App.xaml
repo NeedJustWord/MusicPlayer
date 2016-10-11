@@ -1,0 +1,32 @@
+﻿<Application x:Class="MusicPlayer.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="clr-namespace:MusicPlayer.Converters"
+             xmlns:viewModel="clr-namespace:MusicPlayer.ViewModel"
+             mc:Ignorable="d" 
+             StartupUri="Windows/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/BaseWindowStyle.xaml" />
+                <ResourceDictionary Source="Themes/AboutWindowStyle.xaml"/>
+                <ResourceDictionary Source="Themes/MainWindowStyle.xaml" />
+                <ResourceDictionary Source="Themes/ControlStyle.xaml"/>
+                <ResourceDictionary>
+                    <viewModel:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+                    <converters:BoolToImageSourceConverter x:Key="BoolToImageSourceConverter"/>
+                    <converters:IntFormatConverter x:Key="IntFormatConverter"/>
+                    <converters:ObservableCollectionToEnabledConverter x:Key="ObservableCollectionToEnabledConverter"/>
+                    <converters:SubStringConverter x:Key="SubStringConverter"/>
+                    <converters:PlayModeToBoolConverter x:Key="PlayModeToBoolConverter"/>
+                    <converters:PlayStatusToImageConverter x:Key="PlayStatusToImageConverter"/>
+                    <converters:PlayStatusToVisibilityConverter x:Key="PlayStatusToVisibilityConverter"/>
+                    <converters:TimeLengthConverter x:Key="TimeLengthConverter"/>
+                    <converters:TimeSpanConverter x:Key="TimeSpanConverter"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
