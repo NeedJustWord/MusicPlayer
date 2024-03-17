@@ -164,13 +164,21 @@ namespace MusicPlayer.ViewModel
         private void StopAndPlayNext()
         {
             MusicPlayHelper.Stop();
-            ConfigInfo.PlayStatus = PlayStatus.Pause;
-            NextCommand.Execute(null);
+            if (MusicInfoList.Count == 0)
+            {
+                ConfigInfo.ResetPlayInfo();
+            }
+            else
+            {
+                ConfigInfo.PlayStatus = PlayStatus.Pause;
+                NextCommand.Execute(null);
+            }
         }
 
         private void DeleteMusic(Func<MusicInfo, bool> func)
         {
             bool playNext = false;
+            int oldIndex = -2;
             for (int i = 0; i < MusicInfoList.Count;)
             {
                 MusicInfoList[i].RowNum = i + 1;
@@ -184,11 +192,16 @@ namespace MusicPlayer.ViewModel
                 }
                 else
                 {
+                    if (playNext && oldIndex == -2)
+                    {
+                        oldIndex = i - 1;
+                    }
                     i++;
                 }
             }
             if (playNext)
             {
+                MusicPlayHelper.SetPlayMusicInfo(oldIndex < 0 ? null : MusicInfoList[oldIndex]);
                 StopAndPlayNext();
             }
         }
@@ -205,6 +218,15 @@ namespace MusicPlayer.ViewModel
             }
         }
 
+        private void SetMusicInfoList(IEnumerable<MusicInfo> infos)
+        {
+            MusicInfoList = new ObservableCollection<MusicInfo>(infos.Select((t, i) =>
+            {
+                t.RowNum = i + 1;
+                return t;
+            }));
+        }
+
         private RelayCommand _deleteRepeatMusicCommand;
         public RelayCommand DeleteRepeatMusicCommand
         {
@@ -213,7 +235,7 @@ namespace MusicPlayer.ViewModel
                 return _deleteRepeatMusicCommand ?? (_deleteRepeatMusicCommand = new RelayCommand(() =>
                 {
                     var result = MusicInfoList.Distinct(new MusicInfoNoComparer());
-                    MusicInfoList = new ObservableCollection<MusicInfo>(result);
+                    SetMusicInfoList(result);
                     if (MusicInfoList.All(info => info != MusicPlayHelper.PlayMusicInfo))
                     {
                         StopAndPlayNext();
@@ -247,74 +269,34 @@ namespace MusicPlayer.ViewModel
             }
         }
 
-        private RelayCommand _deleteLastDayAddMusicCommand;
-        public RelayCommand DeleteLastDayAddMusicCommand
+        private RelayCommand<int> _deleteMusicByAddTimeCommand;
+        public RelayCommand<int> DeleteMusicByAddTimeCommand
         {
             get
             {
-                return _deleteLastDayAddMusicCommand ?? (_deleteLastDayAddMusicCommand = new RelayCommand(() =>
+                return _deleteMusicByAddTimeCommand ?? (_deleteMusicByAddTimeCommand = new RelayCommand<int>(day =>
                 {
-                    DeleteMusic(info => info.AddTime < DateTime.Now.AddDays(-1));
+                    var date = DateTime.Now.AddDays(-day);
+                    DeleteMusic(info => info.AddTime < date);
                 }));
             }
         }
 
-        private RelayCommand _deleteLastWeekAddMusicCommand;
-        public RelayCommand DeleteLastWeekAddMusicCommand
+        private RelayCommand<int> _deleteMusicByPlayTimesCommand;
+        public RelayCommand<int> DeleteMusicByPlayTimesCommand
         {
             get
             {
-                return _deleteLastWeekAddMusicCommand ?? (_deleteLastWeekAddMusicCommand = new RelayCommand(() =>
+                return _deleteMusicByPlayTimesCommand ?? (_deleteMusicByPlayTimesCommand = new RelayCommand<int>(playTimes =>
                 {
-                    DeleteMusic(info => info.AddTime < DateTime.Now.AddDays(-7));
-                }));
-            }
-        }
-
-        private RelayCommand _deleteLastMonthAddMusicCommand;
-        public RelayCommand DeleteLastMonthAddMusicCommand
-        {
-            get
-            {
-                return _deleteLastMonthAddMusicCommand ?? (_deleteLastMonthAddMusicCommand = new RelayCommand(() =>
-                {
-                    DeleteMusic(info => info.AddTime < DateTime.Now.AddDays(-30));
-                }));
-            }
-        }
-
-        private RelayCommand _deleteNeverPlayMusicCommand;
-        public RelayCommand DeleteNeverPlayMusicCommand
-        {
-            get
-            {
-                return _deleteNeverPlayMusicCommand ?? (_deleteNeverPlayMusicCommand = new RelayCommand(() =>
-                {
-                    DeleteMusic(info => info.PlayTimes == 0 && info.PlayStatus != PlayStatus.Play);
-                }));
-            }
-        }
-
-        private RelayCommand _deletePlayThreeTimesMusicCommand;
-        public RelayCommand DeletePlayThreeTimesMusicCommand
-        {
-            get
-            {
-                return _deletePlayThreeTimesMusicCommand ?? (_deletePlayThreeTimesMusicCommand = new RelayCommand(() =>
-                {
-                    DeleteMusic(info => info.PlayTimes < 3);
-                }));
-            }
-        }
-
-        private RelayCommand _deletePlaySixTimesMusicCommand;
-        public RelayCommand DeletePlaySixTimesMusicCommand
-        {
-            get
-            {
-                return _deletePlaySixTimesMusicCommand ?? (_deletePlaySixTimesMusicCommand = new RelayCommand(() =>
-                {
-                    DeleteMusic(info => info.PlayTimes < 6);
+                    if (playTimes == 0)
+                    {
+                        DeleteMusic(info => info.PlayTimes == 0 && info.PlayStatus != PlayStatus.Play);
+                    }
+                    else
+                    {
+                        DeleteMusic(info => info.PlayTimes < playTimes);
+                    }
                 }));
             }
         }
@@ -359,11 +341,7 @@ namespace MusicPlayer.ViewModel
                         result = MusicInfoList.OrderByDescending(GlobalInfo.OrderModeFuncs[(int)func]);
                     }
 
-                    MusicInfoList = new ObservableCollection<MusicInfo>(result);
-                    for (int i = 0; i < MusicInfoList.Count;)
-                    {
-                        MusicInfoList[i].RowNum = ++i;
-                    }
+                    SetMusicInfoList(result);
                 }));
             }
         }

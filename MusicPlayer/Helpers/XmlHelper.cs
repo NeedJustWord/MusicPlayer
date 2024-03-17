@@ -12,29 +12,7 @@ namespace MusicPlayer.Helpers
 
         public static ConfigInfo GetConfigInfo()
         {
-            if (!File.Exists(ConfigPath))
-                return new ConfigInfo
-                {
-                    IsMuted = false,
-                    Volume = 0.6,
-                    PlayMode = PlayMode.SequentialPlay,
-                    Opacity = 1,
-                    PlayStatus = PlayStatus.Pause,
-                    MusicName = "多米音乐 欢迎您",
-                    Singer = "",
-                    Position = TimeSpan.FromSeconds(0),
-                    TimeLength = "00:00:00",
-                    MusicTime = "00:00|00:00"
-                };
-
-            var result = SerializationHelper.DeserializeObjectFromFile<ConfigInfo>(ConfigPath, SerializationFormatterType.Xml);
-            result.PlayStatus = PlayStatus.Pause;
-            result.MusicName = "多米音乐 欢迎您";
-            result.Singer = "";
-            result.Position = TimeSpan.FromSeconds(0);
-            result.TimeLength = "00:00:00";
-            result.MusicTime = "00:00|00:00";
-            return result;
+            return File.Exists(ConfigPath) ? SerializationHelper.DeserializeObjectFromFile<ConfigInfo>(ConfigPath, SerializationFormatterType.Xml).ResetPlayInfo() : new ConfigInfo();
         }
 
         public static void SaveConfigInfo(ConfigInfo configInfo)

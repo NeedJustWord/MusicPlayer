@@ -153,14 +153,14 @@
                             <MenuItem Header="清空列表" Command="{Binding ClearMusicListCommand}" IsEnabled="{Binding MusicInfoList.Count}"/>
                             <MenuItem Header="高级删除" >
                                 <MenuItem Header="按添加时间">
-                                    <MenuItem Header="删除一天前添加的" Command="{Binding DeleteLastDayAddMusicCommand}" IsEnabled="{Binding MusicInfoList.Count}"/>
-                                    <MenuItem Header="删除一周前添加的" Command="{Binding DeleteLastWeekAddMusicCommand}" IsEnabled="{Binding MusicInfoList.Count}"/>
-                                    <MenuItem Header="删除一个月前添加的" Command="{Binding DeleteLastMonthAddMusicCommand}" IsEnabled="{Binding MusicInfoList.Count}"/>
+                                    <MenuItem Header="删除一天前添加的" Command="{Binding DeleteMusicByAddTimeCommand}" CommandParameter="1" IsEnabled="{Binding MusicInfoList.Count}"/>
+                                    <MenuItem Header="删除一周前添加的" Command="{Binding DeleteMusicByAddTimeCommand}" CommandParameter="7" IsEnabled="{Binding MusicInfoList.Count}"/>
+                                    <MenuItem Header="删除一个月前添加的" Command="{Binding DeleteMusicByAddTimeCommand}" CommandParameter="30" IsEnabled="{Binding MusicInfoList.Count}"/>
                                 </MenuItem>
                                 <MenuItem Header="按播放次数">
-                                    <MenuItem Header="删除未播放过的" Command="{Binding DeleteNeverPlayMusicCommand}" IsEnabled="{Binding MusicInfoList.Count}"/>
-                                    <MenuItem Header="删除播放过3次以下的" Command="{Binding DeletePlayThreeTimesMusicCommand}" IsEnabled="{Binding MusicInfoList.Count}"/>
-                                    <MenuItem Header="删除播放过6次以下的" Command="{Binding DeletePlaySixTimesMusicCommand}" IsEnabled="{Binding MusicInfoList.Count}"/>
+                                    <MenuItem Header="删除未播放过的" Command="{Binding DeleteMusicByPlayTimesCommand}" CommandParameter="0" IsEnabled="{Binding MusicInfoList.Count}"/>
+                                    <MenuItem Header="删除播放过3次以下的" Command="{Binding DeleteMusicByPlayTimesCommand}" CommandParameter="3" IsEnabled="{Binding MusicInfoList.Count}"/>
+                                    <MenuItem Header="删除播放过6次以下的" Command="{Binding DeleteMusicByPlayTimesCommand}" CommandParameter="6" IsEnabled="{Binding MusicInfoList.Count}"/>
                                 </MenuItem>
                             </MenuItem>
                         </ContextMenu>

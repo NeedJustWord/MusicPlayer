@@ -115,5 +115,25 @@ namespace MusicPlayer.Models
             get { return _musicTime; }
             set { Set("MusicTime", ref _musicTime, value); }
         }
+
+        public ConfigInfo()
+        {
+            IsMuted = false;
+            Volume = 0.6;
+            PlayMode = PlayMode.SequentialPlay;
+            Opacity = 1;
+            ResetPlayInfo();
+        }
+
+        public ConfigInfo ResetPlayInfo()
+        {
+            PlayStatus = PlayStatus.Pause;
+            MusicName = "多米音乐 欢迎您";
+            Singer = "";
+            Position = TimeSpan.FromSeconds(0);
+            TimeLength = "00:00:00";
+            MusicTime = "00:00|00:00";
+            return this;
+        }
     }
 }
