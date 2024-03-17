@@ -15,10 +15,9 @@ namespace MusicPlayer.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private MusicPlayHelper _musicPlayHelper;
-        public MusicPlayHelper MusicPlayHelper => _musicPlayHelper;
+        public MusicPlayHelper MusicPlayHelper { get; }
 
-        public ConfigInfo ConfigInfo { get; set; }
+        public ConfigInfo ConfigInfo { get; }
 
         private ObservableCollection<MusicInfo> _musicInfoList;
         public ObservableCollection<MusicInfo> MusicInfoList
@@ -27,72 +26,240 @@ namespace MusicPlayer.ViewModel
             set { Set("MusicInfoList", ref _musicInfoList, value); }
         }
 
+        #region 命令
+        public RelayCommand WindowClosingCommand { get; }
+        public RelayCommand<IList> SetSelectedStatusCommand { get; }
+        public RelayCommand AddMusicFileCommand { get; }
+        public RelayCommand AddMusicFolderCommand { get; }
+        public RelayCommand DeleteSelectMusicCommand { get; }
+        public RelayCommand DeleteRepeatMusicCommand { get; }
+        public RelayCommand DeleteErrorMusicCommand { get; }
+        public RelayCommand ClearMusicListCommand { get; }
+        public RelayCommand<int> DeleteMusicByAddTimeCommand { get; }
+        public RelayCommand<int> DeleteMusicByPlayTimesCommand { get; }
+        public RelayCommand<PlayMode> SetPlayModeCommand { get; }
+        public RelayCommand<OrderMode> OrderByCommand { get; }
+        public RelayCommand StopCommand { get; }
+        public RelayCommand PrevCommand { get; }
+        public RelayCommand<MusicInfo> PlayPauseCommand { get; }
+        public RelayCommand<bool> NextCommand { get; }
+        public RelayCommand MuteCommand { get; }
+        public RelayCommand VolumeChangedCommand { get; }
+        public RelayCommand PlayProgressChangedCommand { get; }
+        #endregion
+
         public MainWindowViewModel()
         {
             ConfigInfo = XmlHelper.GetConfigInfo();
             MusicInfoList = new ObservableCollection<MusicInfo>(XmlHelper.GetMusicInfoList());
-        }
+            MusicPlayHelper = new MusicPlayHelper(MusicInfoList.Where(t => t.PlayStatus != PlayStatus.Normal).FirstOrDefault());
+            MusicPlayHelper.SetIsMuted(ConfigInfo.IsMuted);
+            MusicPlayHelper.SetVolume(ConfigInfo.Volume);
 
-        #region 保存配置文件和音乐列表
-        private void SaveConfigInfo()
-        {
-            XmlHelper.SaveConfigInfo(ConfigInfo);
-        }
-
-        private void SaveMusicInfoList()
-        {
-            XmlHelper.SaveMusicInfoList(MusicInfoList.ToList());
-        }
-
-        private void SaveInfo()
-        {
-            SaveConfigInfo();
-            SaveMusicInfoList();
-        }
-        #endregion
-
-        private RelayCommand _windowLoadedCommand;
-        public RelayCommand WindowLoadedCommand
-        {
-            get
+            WindowClosingCommand = new RelayCommand(() =>
             {
-                return _windowLoadedCommand ?? (_windowLoadedCommand = new RelayCommand(() =>
-                {
-                    var playMusic = MusicInfoList.Where(t => t.PlayStatus != PlayStatus.Normal).Select(t => t).FirstOrDefault();
-                    _musicPlayHelper = new MusicPlayHelper(playMusic);
-                    MusicPlayHelper.SetIsMuted(ConfigInfo.IsMuted);
-                    MusicPlayHelper.SetVolume(ConfigInfo.Volume);
-                }));
-            }
-        }
-
-        private RelayCommand _windowClosingCommand;
-        public RelayCommand WindowClosingCommand
-        {
-            get
+                MusicPlayHelper.Stop();
+                XmlHelper.SaveConfigInfo(ConfigInfo);
+                XmlHelper.SaveMusicInfoList(MusicInfoList.ToList());
+            });
+            SetSelectedStatusCommand = new RelayCommand<IList>(list =>
             {
-                return _windowClosingCommand ?? (_windowClosingCommand = new RelayCommand(() =>
+                List<MusicInfo> select = list.Cast<MusicInfo>().ToList();
+                MusicInfoList.ForEach(info =>
                 {
-                    MusicPlayHelper.Stop();
-                    SaveInfo();
-                }));
-            }
-        }
-
-        private RelayCommand<IList> _setSelectedStatusCommand;
-        public RelayCommand<IList> SetSelectedStatusCommand
-        {
-            get
+                    info.IsSelected = select.Any(t => t.FilePath == info.FilePath);
+                });
+            });
+            AddMusicFileCommand = new RelayCommand(() =>
             {
-                return _setSelectedStatusCommand ?? (_setSelectedStatusCommand = new RelayCommand<IList>(list =>
+                OpenFileDialog openFileDialog = new OpenFileDialog
                 {
-                    List<MusicInfo> select = list.Cast<MusicInfo>().ToList();
-                    MusicInfoList.ForEach(info =>
+                    Title = "选择文件",
+                    Filter = "音乐文件(*.mp3;*.wma;*.m4a;*.wav;)|*.mp3;*.wma;*.m4a;*.wav;",
+                    FileName = string.Empty,
+                    RestoreDirectory = true,
+                    Multiselect = true
+                };
+                DialogResult result = openFileDialog.ShowDialog();
+
+                if (result == DialogResult.Cancel)
+                {
+                    return;
+                }
+
+                AddMusicFile(openFileDialog.FileNames);
+            });
+            AddMusicFolderCommand = new RelayCommand(() =>
+            {
+                FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog { Description = "选择一个目录" };
+                DialogResult result = folderBrowserDialog.ShowDialog();
+
+                if (result == DialogResult.Cancel)
+                {
+                    return;
+                }
+
+                string[] filePaths = "*.mp3;*.wma;*.m4a;*.wav".Split(';').SelectMany(filter => Directory.GetFiles(folderBrowserDialog.SelectedPath, filter, SearchOption.AllDirectories)).ToArray();
+                AddMusicFile(filePaths);
+            });
+            DeleteSelectMusicCommand = new RelayCommand(() =>
+            {
+                DeleteMusic(info => info.IsSelected);
+            });
+            DeleteRepeatMusicCommand = new RelayCommand(() =>
+            {
+                var result = MusicInfoList.Distinct(new MusicInfoNoComparer());
+                SetMusicInfoList(result);
+                if (MusicInfoList.All(info => info != MusicPlayHelper.PlayMusicInfo))
+                {
+                    StopAndPlayNext();
+                }
+            });
+            DeleteErrorMusicCommand = new RelayCommand(() =>
+            {
+                DeleteMusic(info => !File.Exists(info.FilePath));
+            });
+            ClearMusicListCommand = new RelayCommand(() =>
+            {
+                MusicInfoList.Clear();
+                StopAndPlayNext();
+            });
+            DeleteMusicByAddTimeCommand = new RelayCommand<int>(day =>
+            {
+                var date = DateTime.Now.AddDays(-day);
+                DeleteMusic(info => info.AddTime < date);
+            });
+            DeleteMusicByPlayTimesCommand = new RelayCommand<int>(playTimes =>
+            {
+                if (playTimes == 0)
+                {
+                    DeleteMusic(info => info.PlayTimes == 0 && info.PlayStatus != PlayStatus.Play);
+                }
+                else
+                {
+                    DeleteMusic(info => info.PlayTimes < playTimes);
+                }
+            });
+            SetPlayModeCommand = new RelayCommand<PlayMode>(playMode =>
+            {
+                ConfigInfo.PlayMode = playMode;
+            });
+            OrderByCommand = new RelayCommand<OrderMode>(order =>
+            {
+                IEnumerable<MusicInfo> result;
+                if (ConfigInfo.OrderMode == order)
+                {
+                    if (ConfigInfo.Sort == Sort.Asc)
                     {
-                        info.IsSelected = select.Any(t => t.FilePath == info.FilePath);
-                    });
-                }));
-            }
+                        ConfigInfo.Sort = Sort.Desc;
+                        result = MusicInfoList.OrderByDescending(GlobalInfo.OrderModeFuncs[(int)order]);
+                    }
+                    else
+                    {
+                        ConfigInfo.Sort = Sort.Asc;
+                        result = MusicInfoList.OrderBy(GlobalInfo.OrderModeFuncs[(int)order]);
+                    }
+                }
+                else
+                {
+                    ConfigInfo.Sort = Sort.Asc;
+                    ConfigInfo.OrderMode = order;
+                    result = MusicInfoList.OrderBy(GlobalInfo.OrderModeFuncs[(int)order]);
+                }
+
+                SetMusicInfoList(result);
+            });
+            StopCommand = new RelayCommand(() =>
+            {
+                MusicPlayHelper.Stop();
+                ConfigInfo.PlayStatus = PlayStatus.Pause;
+            });
+            PrevCommand = new RelayCommand(() =>
+            {
+                if (MusicInfoList.Count == 0)
+                {
+                    return;
+                }
+                MusicInfo playMusic;
+                switch (ConfigInfo.PlayMode)
+                {
+                    case PlayMode.RandomPlay:
+                        int index = RandomHelper.GetNextIndex(MusicInfoList.Count, MusicPlayHelper.PlayMusicInfo.RowNum - 1);
+                        playMusic = MusicInfoList[index];
+                        break;
+                    default:
+                        if (MusicPlayHelper.PlayMusicInfo == null)
+                        {
+                            playMusic = MusicInfoList.FirstOrDefault();
+                        }
+                        else
+                        {
+                            index = MusicPlayHelper.PlayMusicInfo.RowNum - 2;
+                            playMusic = index > -1 ? MusicInfoList[index] : MusicInfoList.LastOrDefault();
+                        }
+                        break;
+                }
+                MusicPlayHelper.PlayPause(playMusic);
+            });
+            PlayPauseCommand = new RelayCommand<MusicInfo>(info =>
+            {
+                var playMusic = info ?? MusicPlayHelper.PlayMusicInfo ?? MusicInfoList.FirstOrDefault();
+                MusicPlayHelper.PlayPause(playMusic);
+            });
+            NextCommand = new RelayCommand<bool>((isPlayEnd) =>
+            {
+                if (MusicInfoList.Count == 0)
+                {
+                    return;
+                }
+                MusicInfo playMusic;
+                switch (ConfigInfo.PlayMode)
+                {
+                    case PlayMode.RandomPlay:
+                        int index = RandomHelper.GetNextIndex(MusicInfoList.Count, MusicPlayHelper.PlayMusicInfo.RowNum - 1);
+                        playMusic = MusicInfoList[index];
+                        break;
+                    default:
+                        if (MusicPlayHelper.PlayMusicInfo == null)
+                        {
+                            playMusic = MusicInfoList.FirstOrDefault();
+                        }
+                        else
+                        {
+                            if (ConfigInfo.PlayMode == PlayMode.SinglePlay && isPlayEnd)
+                            {
+                                playMusic = MusicPlayHelper.PlayMusicInfo;
+                                MusicPlayHelper.SetPlayMusicInfo(null);
+                            }
+                            else if (ConfigInfo.PlayMode == PlayMode.SequentialPlay && MusicPlayHelper.PlayMusicInfo.RowNum == MusicInfoList.Count && isPlayEnd)
+                            {
+                                MusicPlayHelper.Finish();
+                                ConfigInfo.PlayStatus = PlayStatus.Pause;
+                                return;
+                            }
+                            else
+                            {
+                                index = MusicPlayHelper.PlayMusicInfo.RowNum;
+                                playMusic = index < MusicInfoList.Count ? MusicInfoList[index] : MusicInfoList.FirstOrDefault();
+                            }
+                        }
+                        break;
+                }
+                MusicPlayHelper.PlayPause(playMusic);
+            });
+            MuteCommand = new RelayCommand(() =>
+            {
+                ConfigInfo.IsMuted = !ConfigInfo.IsMuted;
+                MusicPlayHelper.SetIsMuted(ConfigInfo.IsMuted);
+            });
+            VolumeChangedCommand = new RelayCommand(() =>
+            {
+                MusicPlayHelper.SetVolume(ConfigInfo.Volume);
+            });
+            PlayProgressChangedCommand = new RelayCommand(() =>
+            {
+                MusicPlayHelper.SetPosition(ConfigInfo.Position);
+            });
         }
 
         private void AddMusicFile(params string[] filePaths)
@@ -110,54 +277,6 @@ namespace MusicPlayer.ViewModel
 
                     MusicInfoList.Add(musicInfo);
                 }
-            }
-        }
-
-        private RelayCommand _addMusicFileCommand;
-        public RelayCommand AddMusicFileCommand
-        {
-            get
-            {
-                return _addMusicFileCommand ?? (_addMusicFileCommand = new RelayCommand(() =>
-                {
-                    OpenFileDialog openFileDialog = new OpenFileDialog
-                    {
-                        Title = "选择文件",
-                        Filter = "音乐文件(*.mp3;*.wma;*.m4a;*.wav;)|*.mp3;*.wma;*.m4a;*.wav;",
-                        FileName = string.Empty,
-                        RestoreDirectory = true,
-                        Multiselect = true
-                    };
-                    DialogResult result = openFileDialog.ShowDialog();
-
-                    if (result == DialogResult.Cancel)
-                    {
-                        return;
-                    }
-
-                    AddMusicFile(openFileDialog.FileNames);
-                }));
-            }
-        }
-
-        private RelayCommand _addMusicFolderCommand;
-        public RelayCommand AddMusicFolderCommand
-        {
-            get
-            {
-                return _addMusicFolderCommand ?? (_addMusicFolderCommand = new RelayCommand(() =>
-                {
-                    FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog { Description = "选择一个目录" };
-                    DialogResult result = folderBrowserDialog.ShowDialog();
-
-                    if (result == DialogResult.Cancel)
-                    {
-                        return;
-                    }
-
-                    string[] filePaths = "*.mp3;*.wma;*.m4a;*.wav".Split(';').SelectMany(filter => Directory.GetFiles(folderBrowserDialog.SelectedPath, filter, SearchOption.AllDirectories)).ToArray();
-                    AddMusicFile(filePaths);
-                }));
             }
         }
 
@@ -206,18 +325,6 @@ namespace MusicPlayer.ViewModel
             }
         }
 
-        private RelayCommand _deleteSelectMusicCommand;
-        public RelayCommand DeleteSelectMusicCommand
-        {
-            get
-            {
-                return _deleteSelectMusicCommand ?? (_deleteSelectMusicCommand = new RelayCommand(() =>
-                {
-                    DeleteMusic(info => info.IsSelected);
-                }));
-            }
-        }
-
         private void SetMusicInfoList(IEnumerable<MusicInfo> infos)
         {
             MusicInfoList = new ObservableCollection<MusicInfo>(infos.Select((t, i) =>
@@ -225,272 +332,6 @@ namespace MusicPlayer.ViewModel
                 t.RowNum = i + 1;
                 return t;
             }));
-        }
-
-        private RelayCommand _deleteRepeatMusicCommand;
-        public RelayCommand DeleteRepeatMusicCommand
-        {
-            get
-            {
-                return _deleteRepeatMusicCommand ?? (_deleteRepeatMusicCommand = new RelayCommand(() =>
-                {
-                    var result = MusicInfoList.Distinct(new MusicInfoNoComparer());
-                    SetMusicInfoList(result);
-                    if (MusicInfoList.All(info => info != MusicPlayHelper.PlayMusicInfo))
-                    {
-                        StopAndPlayNext();
-                    }
-                }));
-            }
-        }
-
-        private RelayCommand _deleteErrorMusicCommand;
-        public RelayCommand DeleteErrorMusicCommand
-        {
-            get
-            {
-                return _deleteErrorMusicCommand ?? (_deleteErrorMusicCommand = new RelayCommand(() =>
-                {
-                    DeleteMusic(info => !File.Exists(info.FilePath));
-                }));
-            }
-        }
-
-        private RelayCommand _clearMusicListCommand;
-        public RelayCommand ClearMusicListCommand
-        {
-            get
-            {
-                return _clearMusicListCommand ?? (_clearMusicListCommand = new RelayCommand(() =>
-                {
-                    MusicInfoList.Clear();
-                    StopAndPlayNext();
-                }));
-            }
-        }
-
-        private RelayCommand<int> _deleteMusicByAddTimeCommand;
-        public RelayCommand<int> DeleteMusicByAddTimeCommand
-        {
-            get
-            {
-                return _deleteMusicByAddTimeCommand ?? (_deleteMusicByAddTimeCommand = new RelayCommand<int>(day =>
-                {
-                    var date = DateTime.Now.AddDays(-day);
-                    DeleteMusic(info => info.AddTime < date);
-                }));
-            }
-        }
-
-        private RelayCommand<int> _deleteMusicByPlayTimesCommand;
-        public RelayCommand<int> DeleteMusicByPlayTimesCommand
-        {
-            get
-            {
-                return _deleteMusicByPlayTimesCommand ?? (_deleteMusicByPlayTimesCommand = new RelayCommand<int>(playTimes =>
-                {
-                    if (playTimes == 0)
-                    {
-                        DeleteMusic(info => info.PlayTimes == 0 && info.PlayStatus != PlayStatus.Play);
-                    }
-                    else
-                    {
-                        DeleteMusic(info => info.PlayTimes < playTimes);
-                    }
-                }));
-            }
-        }
-
-        private RelayCommand<PlayMode> _setPlayModeCommand;
-        public RelayCommand<PlayMode> SetPlayModeCommand
-        {
-            get
-            {
-                return _setPlayModeCommand ?? (_setPlayModeCommand = new RelayCommand<PlayMode>(playMode =>
-                {
-                    ConfigInfo.PlayMode = playMode;
-                }));
-            }
-        }
-
-        private RelayCommand<OrderMode> _orderByCommand;
-        public RelayCommand<OrderMode> OrderByCommand
-        {
-            get
-            {
-                return _orderByCommand ?? (_orderByCommand = new RelayCommand<OrderMode>(order =>
-                {
-                    IEnumerable<MusicInfo> result;
-                    if (ConfigInfo.OrderMode == order)
-                    {
-                        if (ConfigInfo.Sort == Sort.Asc)
-                        {
-                            ConfigInfo.Sort = Sort.Desc;
-                            result = MusicInfoList.OrderByDescending(GlobalInfo.OrderModeFuncs[(int)order]);
-                        }
-                        else
-                        {
-                            ConfigInfo.Sort = Sort.Asc;
-                            result = MusicInfoList.OrderBy(GlobalInfo.OrderModeFuncs[(int)order]);
-                        }
-                    }
-                    else
-                    {
-                        ConfigInfo.Sort = Sort.Asc;
-                        ConfigInfo.OrderMode = order;
-                        result = MusicInfoList.OrderBy(GlobalInfo.OrderModeFuncs[(int)order]);
-                    }
-
-                    SetMusicInfoList(result);
-                }));
-            }
-        }
-
-        private RelayCommand _stopCommand;
-        public RelayCommand StopCommand
-        {
-            get
-            {
-                return _stopCommand ?? (_stopCommand = new RelayCommand(() =>
-                {
-                    MusicPlayHelper.Stop();
-                    ConfigInfo.PlayStatus = PlayStatus.Pause;
-                }));
-            }
-        }
-
-        private RelayCommand _prevCommand;
-        public RelayCommand PrevCommand
-        {
-            get
-            {
-                return _prevCommand ?? (_prevCommand = new RelayCommand(() =>
-                {
-                    if (MusicInfoList.Count == 0)
-                    {
-                        return;
-                    }
-                    MusicInfo playMusic;
-                    switch (ConfigInfo.PlayMode)
-                    {
-                        case PlayMode.RandomPlay:
-                            int index = RandomHelper.GetNextIndex(MusicInfoList.Count, MusicPlayHelper.PlayMusicInfo.RowNum - 1);
-                            playMusic = MusicInfoList[index];
-                            break;
-                        default:
-                            if (MusicPlayHelper.PlayMusicInfo == null)
-                            {
-                                playMusic = MusicInfoList.FirstOrDefault();
-                            }
-                            else
-                            {
-                                index = MusicPlayHelper.PlayMusicInfo.RowNum - 2;
-                                playMusic = index > -1 ? MusicInfoList[index] : MusicInfoList.LastOrDefault();
-                            }
-                            break;
-                    }
-                    MusicPlayHelper.PlayPause(playMusic);
-                }));
-            }
-        }
-
-        private RelayCommand<MusicInfo> _playPauseCommand;
-        public RelayCommand<MusicInfo> PlayPauseCommand
-        {
-            get
-            {
-                return _playPauseCommand ?? (_playPauseCommand = new RelayCommand<MusicInfo>(info =>
-                {
-                    var playMusic = info ?? (MusicPlayHelper.PlayMusicInfo ?? MusicInfoList.FirstOrDefault());
-                    MusicPlayHelper.PlayPause(playMusic);
-                }));
-            }
-        }
-
-        private RelayCommand<bool> _nextCommand;
-        public RelayCommand<bool> NextCommand
-        {
-            get
-            {
-                return _nextCommand ?? (_nextCommand = new RelayCommand<bool>((isPlayEnd) =>
-                {
-                    if (MusicInfoList.Count == 0)
-                    {
-                        return;
-                    }
-                    MusicInfo playMusic;
-                    switch (ConfigInfo.PlayMode)
-                    {
-                        case PlayMode.RandomPlay:
-                            int index = RandomHelper.GetNextIndex(MusicInfoList.Count, MusicPlayHelper.PlayMusicInfo.RowNum - 1);
-                            playMusic = MusicInfoList[index];
-                            break;
-                        default:
-                            if (MusicPlayHelper.PlayMusicInfo == null)
-                            {
-                                playMusic = MusicInfoList.FirstOrDefault();
-                            }
-                            else
-                            {
-                                if (ConfigInfo.PlayMode == PlayMode.SinglePlay && isPlayEnd)
-                                {
-                                    playMusic = MusicPlayHelper.PlayMusicInfo;
-                                    MusicPlayHelper.SetPlayMusicInfo(null);
-                                }
-                                else if (ConfigInfo.PlayMode == PlayMode.SequentialPlay && MusicPlayHelper.PlayMusicInfo.RowNum == MusicInfoList.Count && isPlayEnd)
-                                {
-                                    MusicPlayHelper.Finish();
-                                    ConfigInfo.PlayStatus = PlayStatus.Pause;
-                                    return;
-                                }
-                                else
-                                {
-                                    index = MusicPlayHelper.PlayMusicInfo.RowNum;
-                                    playMusic = index < MusicInfoList.Count ? MusicInfoList[index] : MusicInfoList.FirstOrDefault();
-                                }
-                            }
-                            break;
-                    }
-                    MusicPlayHelper.PlayPause(playMusic);
-                }));
-            }
-        }
-
-        private RelayCommand _muteCommand;
-        public RelayCommand MuteCommand
-        {
-            get
-            {
-                return _muteCommand ?? (_muteCommand = new RelayCommand(() =>
-                {
-                    ConfigInfo.IsMuted = !ConfigInfo.IsMuted;
-                    MusicPlayHelper.SetIsMuted(ConfigInfo.IsMuted);
-                }));
-            }
-        }
-
-        private RelayCommand _volumeChangedCommand;
-        public RelayCommand VolumeChangedCommand
-        {
-            get
-            {
-                return _volumeChangedCommand ?? (_volumeChangedCommand = new RelayCommand(() =>
-                {
-                    MusicPlayHelper.SetVolume(ConfigInfo.Volume);
-                }));
-            }
-        }
-
-        private RelayCommand _playProgressChangedCommand;
-        public RelayCommand PlayProgressChangedCommand
-        {
-            get
-            {
-                return _playProgressChangedCommand ?? (_playProgressChangedCommand = new RelayCommand(() =>
-                {
-                    MusicPlayHelper.SetPosition(ConfigInfo.Position);
-                }));
-            }
         }
     }
 }

@@ -30,6 +30,15 @@ namespace MusicPlayer.Controls
                 _hs = PresentationSource.FromVisual(this) as HwndSource;
                 _hs?.AddHook(WndProc);
             };
+            SetOpacityCommand = new RelayCommand<double>(opacity =>
+            {
+                Opacity = opacity;
+            });
+            AboutCommand = new RelayCommand(() =>
+            {
+                AboutWindow about = new AboutWindow();
+                about.ShowDialog();
+            });
         }
 
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -38,32 +47,9 @@ namespace MusicPlayer.Controls
         }
 
         #region 命令
-        private RelayCommand<double> _setOpacityCommand;
+        public RelayCommand<double> SetOpacityCommand { get; }
 
-        public RelayCommand<double> SetOpacityCommand
-        {
-            get
-            {
-                return _setOpacityCommand ?? (_setOpacityCommand = new RelayCommand<double>(opacity =>
-                {
-                    Opacity = opacity;
-                }));
-            }
-        }
-
-        private RelayCommand _aboutCommand;
-
-        public RelayCommand AboutCommand
-        {
-            get
-            {
-                return _aboutCommand ?? (_aboutCommand = new RelayCommand(() =>
-                {
-                    AboutWindow about = new AboutWindow();
-                    about.ShowDialog();
-                }));
-            }
-        }
+        public RelayCommand AboutCommand { get; }
         #endregion
 
         #region 四个边加上四个角
