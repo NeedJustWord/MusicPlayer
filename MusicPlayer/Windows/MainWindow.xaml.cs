@@ -16,7 +16,7 @@ namespace MusicPlayer.Windows
             InitializeComponent();
             MessengerHelper.Register<string>(this, GlobalInfo.NextMusicToken, message =>
             {
-                ViewMode.NextCommand.Execute(null);
+                ViewMode.NextCommand.Execute(true);
             });
             MessengerHelper.Register<MusicInfo>(this, GlobalInfo.UpdateInfoToken, info =>
             {

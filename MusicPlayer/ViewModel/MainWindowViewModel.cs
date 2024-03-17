@@ -429,12 +429,12 @@ namespace MusicPlayer.ViewModel
             }
         }
 
-        private RelayCommand _nextCommand;
-        public RelayCommand NextCommand
+        private RelayCommand<bool> _nextCommand;
+        public RelayCommand<bool> NextCommand
         {
             get
             {
-                return _nextCommand ?? (_nextCommand = new RelayCommand(() =>
+                return _nextCommand ?? (_nextCommand = new RelayCommand<bool>((isPlayEnd) =>
                 {
                     if (MusicInfoList.Count == 0)
                     {
@@ -454,8 +454,22 @@ namespace MusicPlayer.ViewModel
                             }
                             else
                             {
-                                index = MusicPlayHelper.PlayMusicInfo.RowNum;
-                                playMusic = index < MusicInfoList.Count ? MusicInfoList[index] : MusicInfoList.FirstOrDefault();
+                                if (ConfigInfo.PlayMode == PlayMode.SinglePlay && isPlayEnd)
+                                {
+                                    playMusic = MusicPlayHelper.PlayMusicInfo;
+                                    MusicPlayHelper.SetPlayMusicInfo(null);
+                                }
+                                else if (ConfigInfo.PlayMode == PlayMode.SequentialPlay && MusicPlayHelper.PlayMusicInfo.RowNum == MusicInfoList.Count && isPlayEnd)
+                                {
+                                    MusicPlayHelper.Finish();
+                                    ConfigInfo.PlayStatus = PlayStatus.Pause;
+                                    return;
+                                }
+                                else
+                                {
+                                    index = MusicPlayHelper.PlayMusicInfo.RowNum;
+                                    playMusic = index < MusicInfoList.Count ? MusicInfoList[index] : MusicInfoList.FirstOrDefault();
+                                }
                             }
                             break;
                     }

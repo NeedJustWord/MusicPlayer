@@ -85,6 +85,18 @@ namespace MusicPlayer.Helpers
             _mediaPlayer.Stop();
         }
 
+        public void Finish()
+        {
+            SetMusicInfoPlayStatus(PlayStatus.Normal);
+            _mediaPlayer.Stop();
+            _playMusicInfo = null;
+        }
+
+        public void SetPlayMusicInfo(MusicInfo music)
+        {
+            _playMusicInfo = music;
+        }
+
         public void SetIsMuted(bool isMuted)
         {
             _mediaPlayer.IsMuted = isMuted;
