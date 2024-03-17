@@ -118,10 +118,6 @@ namespace MusicPlayer.Models
 
         public ConfigInfo()
         {
-            IsMuted = false;
-            Volume = 0.6;
-            PlayMode = PlayMode.SequentialPlay;
-            Opacity = 1;
             ResetPlayInfo();
         }
 

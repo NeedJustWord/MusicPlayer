@@ -12,7 +12,7 @@ namespace MusicPlayer.Helpers
 
         public static ConfigInfo GetConfigInfo()
         {
-            return File.Exists(ConfigPath) ? SerializationHelper.DeserializeObjectFromFile<ConfigInfo>(ConfigPath, SerializationFormatterType.Xml).ResetPlayInfo() : new ConfigInfo();
+            return File.Exists(ConfigPath) ? SerializationHelper.DeserializeObjectFromFile<ConfigInfo>(ConfigPath, SerializationFormatterType.Xml) : new ConfigInfo();
         }
 
         public static void SaveConfigInfo(ConfigInfo configInfo)

@@ -6,16 +6,12 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using GalaSoft.MvvmLight.Command;
-using MusicPlayer.ViewModel;
 using MusicPlayer.Windows;
 
 namespace MusicPlayer.Controls
 {
     public class BaseWindow : Window
     {
-        private MainWindowViewModel _viewModel;
-        public MainWindowViewModel ViewMode => _viewModel ?? (_viewModel = DataContext as MainWindowViewModel);
-
         private HwndSource _hs;
         private bool _isHide;
         private bool _isInside;
@@ -190,10 +186,10 @@ namespace MusicPlayer.Controls
                 {
                     titleBar.MouseLeftButtonDown += (sender, e) =>
                     {
-                        double top = ViewMode.ConfigInfo.Top;
-                        double left = ViewMode.ConfigInfo.Left;
-                        double width = ViewMode.ConfigInfo.Width;
-                        double height = ViewMode.ConfigInfo.Height;
+                        double top = GlobalInfo.ConfigInfo.Top;
+                        double left = GlobalInfo.ConfigInfo.Left;
+                        double width = GlobalInfo.ConfigInfo.Width;
+                        double height = GlobalInfo.ConfigInfo.Height;
                         MoveWindow();
 
                         Point point = PointToScreen(Mouse.GetPosition(this));
@@ -215,13 +211,13 @@ namespace MusicPlayer.Controls
         #region 窗体靠边隐藏
         private void HideWindow()
         {
-            if (ViewMode.ConfigInfo.Top < 3)
+            if (GlobalInfo.ConfigInfo.Top < 3)
             {
                 _isHide = true;
                 DoubleAnimation topAnimation = new DoubleAnimation
                 {
-                    From = ViewMode.ConfigInfo.Top,
-                    To = 3 - ViewMode.ConfigInfo.Height,
+                    From = GlobalInfo.ConfigInfo.Top,
+                    To = 3 - GlobalInfo.ConfigInfo.Height,
                     Duration = TimeSpan.FromMilliseconds(100)
                 };
                 BeginAnimation(TopProperty, topAnimation);
@@ -235,7 +231,7 @@ namespace MusicPlayer.Controls
                 _isHide = false;
                 DoubleAnimation topAnimation = new DoubleAnimation
                 {
-                    From = ViewMode.ConfigInfo.Top,
+                    From = GlobalInfo.ConfigInfo.Top,
                     To = 0,
                     Duration = TimeSpan.FromMilliseconds(100)
                 };

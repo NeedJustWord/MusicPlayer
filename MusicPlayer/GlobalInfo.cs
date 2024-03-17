@@ -1,30 +1,32 @@
 ﻿using System;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using MusicPlayer.Helpers;
 using MusicPlayer.Models;
 
 namespace MusicPlayer
 {
     class GlobalInfo
     {
-        public static string NextMusicToken = "NextMusic";
-        public static string UpdateInfoToken = "UpdateInfo";
-        public static string UpdatePlayProgressToken = "UpdatePlayProgress";
-        public static string[] PlayModeTexts = { "顺序", "循环", "随机", "单曲" };
-        public static ImageSource[] PlayModeImages =
+        public static readonly string NextMusicToken = "NextMusic";
+        public static readonly string UpdateInfoToken = "UpdateInfo";
+        public static readonly string UpdatePlayProgressToken = "UpdatePlayProgress";
+        public static readonly string[] PlayModeTexts = { "顺序", "循环", "随机", "单曲" };
+        public static readonly ImageSource[] PlayModeImages =
         {
             new BitmapImage(new Uri("/Images/Sequential.png", UriKind.Relative)),
             new BitmapImage(new Uri("/Images/Loop.png", UriKind.Relative)),
             new BitmapImage(new Uri("/Images/Random.png", UriKind.Relative)),
             new BitmapImage(new Uri("/Images/Single.png", UriKind.Relative))
         };
-        public static Func<MusicInfo, string>[] OrderModeFuncs =
+        public static readonly Func<MusicInfo, string>[] OrderModeFuncs =
         {
             info => info.MusicName,
             info => info.Singer,
             info => info.PlayTimes.ToString("D8"),
             info => info.AddTime.ToString("yyyy-MM-dd HH:mm:ss.fffffff"),
         };
+        public static readonly ConfigInfo ConfigInfo = XmlHelper.GetConfigInfo();
     }
 
     public enum PlayStatus

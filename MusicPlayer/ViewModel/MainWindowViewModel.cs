@@ -17,7 +17,7 @@ namespace MusicPlayer.ViewModel
     {
         public MusicPlayHelper MusicPlayHelper { get; }
 
-        public ConfigInfo ConfigInfo { get; }
+        public ConfigInfo ConfigInfo => GlobalInfo.ConfigInfo;
 
         private ObservableCollection<MusicInfo> _musicInfoList;
         public ObservableCollection<MusicInfo> MusicInfoList
@@ -50,9 +50,8 @@ namespace MusicPlayer.ViewModel
 
         public MainWindowViewModel()
         {
-            ConfigInfo = XmlHelper.GetConfigInfo();
             MusicInfoList = new ObservableCollection<MusicInfo>(XmlHelper.GetMusicInfoList());
-            MusicPlayHelper = new MusicPlayHelper(MusicInfoList.Where(t => t.PlayStatus != PlayStatus.Normal).FirstOrDefault());
+            MusicPlayHelper = new MusicPlayHelper(MusicInfoList.FirstOrDefault(t => t.PlayStatus != PlayStatus.Normal));
             MusicPlayHelper.SetIsMuted(ConfigInfo.IsMuted);
             MusicPlayHelper.SetVolume(ConfigInfo.Volume);
 

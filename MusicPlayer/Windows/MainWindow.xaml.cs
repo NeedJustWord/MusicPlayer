@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using MusicPlayer.Helpers;
 using MusicPlayer.Models;
+using MusicPlayer.ViewModel;
 
 namespace MusicPlayer.Windows
 {
@@ -11,9 +12,13 @@ namespace MusicPlayer.Windows
     /// </summary>
     public partial class MainWindow
     {
+        public MainWindowViewModel ViewMode { get; }
+
         public MainWindow()
         {
             InitializeComponent();
+            ViewMode = (MainWindowViewModel)DataContext;
+
             MessengerHelper.Register<string>(this, GlobalInfo.NextMusicToken, message =>
             {
                 ViewMode.NextCommand.Execute(true);
