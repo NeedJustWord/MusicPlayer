@@ -19,41 +19,38 @@
     <Style TargetType="DataGridRow" BasedOn="{StaticResource BaseControlFont}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="FontSize" Value="{StaticResource BaseFontBigSize}"/>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="ToolTip">
-                    <Setter.Value>
-                        <Grid d:DataContext="{d:DesignInstance models:MusicInfo}">
-                            <StackPanel Orientation="Vertical" Margin="10,0,10,0">
-                                <StackPanel Orientation="Horizontal" Style="{StaticResource StackPanelStyle}">
-                                    <TextBlock Text="歌名：" Style="{StaticResource TextBlockStyle}"/>
-                                    <TextBlock Text="{Binding MusicName}" Style="{StaticResource TextBlockStyle}"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Style="{StaticResource StackPanelStyle}">
-                                    <TextBlock Text="歌手：" Style="{StaticResource TextBlockStyle}"/>
-                                    <TextBlock Text="{Binding Singer}" Style="{StaticResource TextBlockStyle}"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Style="{StaticResource StackPanelStyle}">
-                                    <TextBlock Text="专辑：" Style="{StaticResource TextBlockStyle}"/>
-                                    <TextBlock Text="{Binding Album}" Style="{StaticResource TextBlockStyle}"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Style="{StaticResource StackPanelStyle}">
-                                    <TextBlock Text="码率：" Style="{StaticResource TextBlockStyle}"/>
-                                    <TextBlock Text="{Binding Rate}" Style="{StaticResource TextBlockStyle}"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Style="{StaticResource StackPanelStyle}">
-                                    <TextBlock Text="播放次数：" Style="{StaticResource TextBlockStyle}"/>
-                                    <TextBlock Text="{Binding PlayTimes}" Style="{StaticResource TextBlockStyle}"/>
-                                    <TextBlock Text="    加入时间：" Style="{StaticResource TextBlockStyle}"/>
-                                    <TextBlock Text="{Binding AddTime,Converter={StaticResource DateFormatConverter}}"
+        <Setter Property="ToolTipService.Placement" Value="Center"/>
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <Grid d:DataContext="{d:DesignInstance models:MusicInfo}">
+                    <StackPanel Orientation="Vertical" Margin="10,0,10,0">
+                        <StackPanel Orientation="Horizontal" Style="{StaticResource StackPanelStyle}">
+                            <TextBlock Text="歌名：" Style="{StaticResource TextBlockStyle}"/>
+                            <TextBlock Text="{Binding MusicName}" Style="{StaticResource TextBlockStyle}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Style="{StaticResource StackPanelStyle}">
+                            <TextBlock Text="歌手：" Style="{StaticResource TextBlockStyle}"/>
+                            <TextBlock Text="{Binding Singer}" Style="{StaticResource TextBlockStyle}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Style="{StaticResource StackPanelStyle}">
+                            <TextBlock Text="专辑：" Style="{StaticResource TextBlockStyle}"/>
+                            <TextBlock Text="{Binding Album}" Style="{StaticResource TextBlockStyle}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Style="{StaticResource StackPanelStyle}">
+                            <TextBlock Text="码率：" Style="{StaticResource TextBlockStyle}"/>
+                            <TextBlock Text="{Binding Rate}" Style="{StaticResource TextBlockStyle}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Style="{StaticResource StackPanelStyle}">
+                            <TextBlock Text="播放次数：" Style="{StaticResource TextBlockStyle}"/>
+                            <TextBlock Text="{Binding PlayTimes}" Style="{StaticResource TextBlockStyle}"/>
+                            <TextBlock Text="    加入时间：" Style="{StaticResource TextBlockStyle}"/>
+                            <TextBlock Text="{Binding AddTime,Converter={StaticResource DateFormatConverter}}"
                                                Style="{StaticResource TextBlockStyle}"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </Grid>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-        </Style.Triggers>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!--单元格样式触发-->

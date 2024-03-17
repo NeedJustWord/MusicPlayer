@@ -9,6 +9,8 @@ namespace MusicPlayer.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null) return 0;
+
             BitmapSource bitmapSource = (BitmapSource)value;
             if (parameter.ToString() == "Width") return bitmapSource.PixelWidth;
             return bitmapSource.PixelHeight;
