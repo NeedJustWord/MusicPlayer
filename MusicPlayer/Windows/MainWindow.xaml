@@ -42,12 +42,22 @@
 
             <Image Grid.Row="0" Grid.Column="0" Style="{StaticResource AlbumStyle}" />
 
-            <Canvas Grid.Row="0" Grid.Column="1">
-                <TextBlock Canvas.Top="10" Style="{StaticResource MusicNameStyle}" Text="{Binding ConfigInfo.MusicName}"/>
-                <TextBlock Canvas.Top="30" Style="{StaticResource SingerStyle}" Text="{Binding ConfigInfo.Singer}"/>
-                <controls:BaseButton Canvas.Top="10" Canvas.Right="10" Style="{StaticResource SkinIconStyle}"/>
-                <TextBlock Canvas.Right="10" Canvas.Bottom="0" Style="{StaticResource MusicTimeStyle}" Text="{Binding ConfigInfo.MusicTime}"/>
-            </Canvas>
+            <Grid Grid.Row="0" Grid.Column="1" Margin="0 10 10 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource MusicNameStyle}" Text="{Binding ConfigInfo.MusicName}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource SingerStyle}" Text="{Binding ConfigInfo.Singer}"/>
+                <controls:BaseButton Grid.Row="0" Grid.Column="1" Style="{StaticResource SkinIconStyle}"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource MusicTimeStyle}" Text="{Binding ConfigInfo.MusicTime}"/>
+            </Grid>
         </Grid>
 
         <!-- 播放控制 -->

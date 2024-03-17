@@ -46,9 +46,15 @@
         <Setter Property="Source" Value="/Images/album.png"/>
     </Style>
 
-    <Style x:Key="MusicNameStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockFont}"/>
+    <Style x:Key="MusicNameStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockFont}">
+        <Setter Property="TextTrimming" Value="WordEllipsis"/>
+        <Setter Property="controls:ToolTipService.ShowToolTipWhenTextTrimming" Value="True"/>
+    </Style>
 
-    <Style x:Key="SingerStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockFont}"/>
+    <Style x:Key="SingerStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockFont}">
+        <Setter Property="TextTrimming" Value="WordEllipsis"/>
+        <Setter Property="controls:ToolTipService.ShowToolTipWhenTextTrimming" Value="True"/>
+    </Style>
 
     <Style x:Key="SkinIconStyle" TargetType="controls:BaseButton" BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="Width" Value="18" />
@@ -58,6 +64,7 @@
 
     <Style x:Key="MusicTimeStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockFont}">
         <Setter Property="FontSize" Value="{StaticResource BaseFontSmallSize}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
     </Style>
 
     <!-- 播放控制 -->
