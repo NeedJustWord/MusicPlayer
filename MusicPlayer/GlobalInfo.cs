@@ -22,8 +22,8 @@ namespace MusicPlayer
         {
             info => info.MusicName,
             info => info.Singer,
-            info => info.PlayTimes.ToString(),
-            info => info.AddTime.Ticks.ToString()
+            info => info.PlayTimes.ToString("D8"),
+            info => info.AddTime.ToString("yyyy-MM-dd HH:mm:ss.fffffff"),
         };
     }
 
@@ -78,7 +78,7 @@ namespace MusicPlayer
         /// </summary>
         PlayTimes = 2,
         /// <summary>
-        /// 按添加时间
+        /// 按添加时间排序
         /// </summary>
         AddTime = 3
     }

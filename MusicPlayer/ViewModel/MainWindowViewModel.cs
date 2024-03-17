@@ -318,27 +318,27 @@ namespace MusicPlayer.ViewModel
         {
             get
             {
-                return _orderByCommand ?? (_orderByCommand = new RelayCommand<OrderMode>(func =>
+                return _orderByCommand ?? (_orderByCommand = new RelayCommand<OrderMode>(order =>
                 {
                     IEnumerable<MusicInfo> result;
-                    if (ConfigInfo.OrderMode == func)
+                    if (ConfigInfo.OrderMode == order)
                     {
                         if (ConfigInfo.Sort == Sort.Asc)
                         {
                             ConfigInfo.Sort = Sort.Desc;
-                            result = MusicInfoList.OrderByDescending(GlobalInfo.OrderModeFuncs[(int)func]);
+                            result = MusicInfoList.OrderByDescending(GlobalInfo.OrderModeFuncs[(int)order]);
                         }
                         else
                         {
                             ConfigInfo.Sort = Sort.Asc;
-                            result = MusicInfoList.OrderBy(GlobalInfo.OrderModeFuncs[(int)func]);
+                            result = MusicInfoList.OrderBy(GlobalInfo.OrderModeFuncs[(int)order]);
                         }
                     }
                     else
                     {
-                        ConfigInfo.Sort = Sort.Desc;
-                        ConfigInfo.OrderMode = func;
-                        result = MusicInfoList.OrderByDescending(GlobalInfo.OrderModeFuncs[(int)func]);
+                        ConfigInfo.Sort = Sort.Asc;
+                        ConfigInfo.OrderMode = order;
+                        result = MusicInfoList.OrderBy(GlobalInfo.OrderModeFuncs[(int)order]);
                     }
 
                     SetMusicInfoList(result);
