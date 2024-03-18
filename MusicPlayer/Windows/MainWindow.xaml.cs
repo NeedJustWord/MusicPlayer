@@ -35,6 +35,7 @@ namespace MusicPlayer.Windows
                     ViewMode.ConfigInfo.MusicName = info.MusicName;
                     ViewMode.ConfigInfo.Singer = info.Singer;
                     ViewMode.ConfigInfo.TimeLength = info.TimeLength;
+                    MusicList.ScrollIntoView(info);
                     SetPlayProgress(info.Position);
                 }
             });
