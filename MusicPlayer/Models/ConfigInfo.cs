@@ -22,6 +22,13 @@ namespace MusicPlayer.Models
             set { Set("Opacity", ref _opacity, value); }
         }
 
+        private bool _autoPlay;
+        public bool AutoPlay
+        {
+            get { return _autoPlay; }
+            set { Set("AutoPlay", ref _autoPlay, value); }
+        }
+
         private bool _isMuted;
         public bool IsMuted
         {

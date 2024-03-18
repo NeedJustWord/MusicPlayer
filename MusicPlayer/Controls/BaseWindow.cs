@@ -30,6 +30,10 @@ namespace MusicPlayer.Controls
             {
                 Opacity = opacity;
             });
+            AutoPlayCommand = new RelayCommand(() =>
+            {
+                GlobalInfo.ConfigInfo.AutoPlay = !GlobalInfo.ConfigInfo.AutoPlay;
+            });
             AboutCommand = new RelayCommand(() =>
             {
                 AboutWindow about = new AboutWindow();
@@ -44,7 +48,7 @@ namespace MusicPlayer.Controls
 
         #region 命令
         public RelayCommand<double> SetOpacityCommand { get; }
-
+        public RelayCommand AutoPlayCommand { get; }
         public RelayCommand AboutCommand { get; }
         #endregion
 

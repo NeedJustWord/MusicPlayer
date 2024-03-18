@@ -27,6 +27,7 @@ namespace MusicPlayer.ViewModel
         }
 
         #region 命令
+        public RelayCommand WindowLoadedCommand { get; }
         public RelayCommand WindowClosingCommand { get; }
         public RelayCommand<IList> SetSelectedStatusCommand { get; }
         public RelayCommand AddMusicFileCommand { get; }
@@ -55,6 +56,10 @@ namespace MusicPlayer.ViewModel
             MusicPlayHelper.SetIsMuted(ConfigInfo.IsMuted);
             MusicPlayHelper.SetVolume(ConfigInfo.Volume);
 
+            WindowLoadedCommand = new RelayCommand(() =>
+            {
+                if (ConfigInfo.AutoPlay) PlayPauseCommand.Execute(null);
+            });
             WindowClosingCommand = new RelayCommand(() =>
             {
                 MusicPlayHelper.Stop();

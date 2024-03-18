@@ -17,6 +17,9 @@
         Height="{Binding ConfigInfo.Height,Mode=TwoWay}"
         Opacity="{Binding ConfigInfo.Opacity,Mode=TwoWay}">
     <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}"/>
+        </i:EventTrigger>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding WindowClosingCommand}"/>
         </i:EventTrigger>
