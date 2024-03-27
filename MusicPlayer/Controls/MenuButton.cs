@@ -5,7 +5,7 @@ using System.Windows.Controls.Primitives;
 
 namespace MusicPlayer.Controls
 {
-    public class MenuButton : BaseButton
+    public class MenuButton : Button
     {
         private ContextMenu _contextMenu;
 

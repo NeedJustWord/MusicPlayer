@@ -2,7 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:MusicPlayer.Controls"
                     xmlns:converters="clr-namespace:MusicPlayer.Converters">
-    <converters:BitmapSourceConverter x:Key="BitmapSourceConverter"/>
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     <converters:MarginConverter x:Key="MarginConverter"/>
     <converters:ThicknessConverter x:Key="ThicknessConverter"/>
@@ -57,12 +56,31 @@
     <Style x:Key="SliderThumbStyle" TargetType="{x:Type Thumb}">
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
-        <Setter Property="Height" Value="{Binding Path=(controls:BaseSlider.ThumbImage),Converter={StaticResource BitmapSourceConverter},ConverterParameter=Height,RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}" />
-        <Setter Property="Width" Value="{Binding Path=(controls:BaseSlider.ThumbImage),Converter={StaticResource BitmapSourceConverter},ConverterParameter=Width,RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}" />
+        <Setter Property="Height" Value="{Binding Path=(controls:IconElement.Height),RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}" />
+        <Setter Property="Width" Value="{Binding Path=(controls:IconElement.Width),RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Image Source="{Binding Path=(controls:BaseSlider.ThumbImage),RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                    <StackPanel Background="Transparent">
+                        <Canvas Name="CanvasMain"
+                                Width="{Binding Path=(controls:IconElement.Width),RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}"
+                                Height="{Binding Path=(controls:IconElement.Height),RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}">
+                            <Path RenderOptions.EdgeMode="{Binding Path=(controls:IconElement.EdgeMode),RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}"
+                                  StrokeThickness="{Binding Path=(controls:IconElement.StrokeThickness),RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}"
+                                  Stroke="{Binding Path=(controls:IconElement.Color),RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}"
+                                  Fill="{Binding Path=(controls:IconElement.Color),RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}"
+                                  Data="{Binding Path=(controls:IconElement.Icon),RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}"/>
+                        </Canvas>
+                        <Image Name="ImageMain" Source="{Binding Path=(controls:IconElement.Image),RelativeSource={RelativeSource AncestorType=Slider,Mode=FindAncestor}}" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Width" Value="15">
+                            <Setter Property="Visibility" TargetName="CanvasMain" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="Width" Value="11">
+                            <Setter Property="Visibility" TargetName="ImageMain" Value="Collapsed"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -136,9 +154,8 @@
         <Setter Property="IsShowBorder" Value="True"/>
         <Setter Property="Thickness" Value="3"/>
         <Setter Property="ActualBorderBrush" Value="#2d2d2e"/>
-        <Setter Property="LeftBrush" Value="#a0a0a0"/>
-        <Setter Property="RightBrush" Value="#505050"/>
-        <Setter Property="ThumbImage" Value="/Images/VolumeSliderThumb.png"/>
+        <Setter Property="LeftBrush" Value="{StaticResource VolumeSliderThumbLeftColorBrush}"/>
+        <Setter Property="RightBrush" Value="{StaticResource VolumeSliderThumbRightColorBrush}"/>
         <Setter Property="IsPlayProgress" Value="False"/>
         <Style.Triggers>
             <Trigger Property="Orientation" Value="Horizontal">

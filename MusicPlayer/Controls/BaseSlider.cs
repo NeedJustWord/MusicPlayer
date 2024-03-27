@@ -52,15 +52,6 @@ namespace MusicPlayer.Controls
             set { SetValue(RightBrushProperty, value); }
         }
 
-        public static DependencyProperty ThumbImageProperty = DependencyProperty.Register("ThumbImage", typeof(ImageSource),
-            typeof(BaseSlider));
-
-        public ImageSource ThumbImage
-        {
-            get { return (ImageSource)GetValue(ThumbImageProperty); }
-            set { SetValue(ThumbImageProperty, value); }
-        }
-
         public static DependencyProperty IsPlayProgressProperty = DependencyProperty.Register("IsPlayProgress", typeof(bool),
             typeof(BaseSlider));
 

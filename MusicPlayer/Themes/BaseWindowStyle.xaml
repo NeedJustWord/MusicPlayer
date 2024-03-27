@@ -9,35 +9,40 @@
 
     <converters:OpacityToCheckedConverter x:Key="OpacityToCheckedConverter"/>
 
+    <Style x:Key="BaseWindowButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="14"/>
+        <Setter Property="controls:IconElement.Width" Value="18"/>
+        <Setter Property="controls:IconElement.Height" Value="14"/>
+        <Setter Property="controls:IconElement.Color" Value="{StaticResource WindowIconColorBrush}"/>
+    </Style>
+
     <!-- Close Button -->
-    <Style x:Key="CloseButton" TargetType="controls:BaseButton" BasedOn="{StaticResource BaseButtonStyle}">
-        <Setter Property="Width" Value="17" />
-        <Setter Property="IsShifting" Value="False"/>
+    <Style x:Key="CloseButton" TargetType="Button" BasedOn="{StaticResource BaseWindowButtonStyle}">
+        <Setter Property="Width" Value="17"/>
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="controls:IconElement.Width" Value="17"/>
+        <Setter Property="controls:IconElement.Height" Value="16"/>
+        <Setter Property="controls:IconElement.Icon" Value="{StaticResource CloseGeometry}"/>
+        <Setter Property="controls:IconTriggerElement.MouseOverBackground" Value="{StaticResource CloseButtonMouseOverBackgroundBrush}"/>
+        <Setter Property="controls:IconTriggerElement.PressedBackground" Value="{StaticResource CloseButtonPressedBackgroundBrush}"/>
+        <Setter Property="controls:OffsetElement.IsOffset" Value="False"/>
         <Setter Property="Margin" Value="0,0,10,0" />
-        <Setter Property="NormalImage" Value="/Images/Close.png"/>
-        <Setter Property="MouseOverImage" Value="/Images/CloseEnter.png"/>
-        <Setter Property="PressedImage" Value="/Images/CloseDown.png"/>
     </Style>
 
     <!-- Minimize Button -->
-    <Style x:Key="MinButton" TargetType="controls:BaseButton" BasedOn="{StaticResource BaseButtonStyle}">
-        <Setter Property="Width" Value="18" />
-        <Setter Property="Height" Value="14"/>
-        <Setter Property="NormalImage" Value="/Images/Min.png"/>
+    <Style x:Key="MinButton" TargetType="Button" BasedOn="{StaticResource BaseWindowButtonStyle}">
+        <Setter Property="controls:IconElement.Icon" Value="{StaticResource MinGeometry}"/>
     </Style>
 
     <!-- MiniStyle Button -->
-    <Style x:Key="MiniStyleButton" TargetType="controls:BaseButton" BasedOn="{StaticResource BaseButtonStyle}">
-        <Setter Property="Width" Value="18" />
-        <Setter Property="Height" Value="14"/>
-        <Setter Property="NormalImage" Value="/Images/MiniStyle.png"/>
+    <Style x:Key="MiniStyleButton" TargetType="Button" BasedOn="{StaticResource BaseWindowButtonStyle}">
+        <Setter Property="controls:IconElement.Icon" Value="{StaticResource MiniStyleGeometry}"/>
     </Style>
 
     <!-- Menu Button -->
-    <Style x:Key="MenuButton" TargetType="controls:MenuButton" BasedOn="{StaticResource BaseButtonStyle}">
-        <Setter Property="Width" Value="18" />
-        <Setter Property="Height" Value="14"/>
-        <Setter Property="NormalImage" Value="/Images/Menu.png"/>
+    <Style x:Key="MenuButton" TargetType="controls:MenuButton" BasedOn="{StaticResource BaseWindowButtonStyle}">
+        <Setter Property="controls:IconElement.Icon" Value="{StaticResource MenuGeometry}"/>
         <Setter Property="Placement" Value="Bottom"/>
     </Style>
 
@@ -124,9 +129,9 @@
                                     </ContextMenu>
                                 </Button.ContextMenu>
                             </controls:MenuButton>
-                            <controls:BaseButton x:Name="BtnMiniStyle" Style="{StaticResource MiniStyleButton}"/>
-                            <controls:BaseButton x:Name="BtnMin" Style="{StaticResource MinButton}"/>
-                            <controls:BaseButton x:Name="BtnClose" Style="{StaticResource CloseButton}"/>
+                            <Button x:Name="BtnMiniStyle" Style="{StaticResource MiniStyleButton}"/>
+                            <Button x:Name="BtnMin" Style="{StaticResource MinButton}"/>
+                            <Button x:Name="BtnClose" Style="{StaticResource CloseButton}"/>
                         </StackPanel>
                     </Grid>
 

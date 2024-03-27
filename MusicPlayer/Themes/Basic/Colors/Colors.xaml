@@ -1,0 +1,48 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--字体颜色-->
+    <Color x:Key="FontColor">#ffffff</Color>
+
+    <!--窗体图标颜色-->
+    <Color x:Key="WindowIconColor">#fdfcff</Color>
+    <!--音乐控制按钮图标颜色-->
+    <Color x:Key="ControlIconColor">#eff3f4</Color>
+    <!--菜单图标颜色-->
+    <Color x:Key="MenuIconColor">#ffffff</Color>
+
+    <!--播放暂停状态按钮图标颜色-->
+    <Color x:Key="PlayPauseStatusButtonIconColor">#7fcb48</Color>
+
+    <!--音量按钮图标颜色-->
+    <Color x:Key="VolumeButtonIconColor">#f0f4f5</Color>
+    <!--静音按钮图标颜色-->
+    <Color x:Key="MuteButtonIconUpColor">#ed463d</Color>
+    <Color x:Key="MuteButtonIconDownColor">#e0091d</Color>
+
+    <!--播放进度条左边、右边颜色-->
+    <Color x:Key="MusicSliderThumbLeftColor">#009fe3</Color>
+    <Color x:Key="MusicSliderThumbRightColor">#19596b</Color>
+
+    <!--音量进度条图标、左边、右边颜色-->
+    <Color x:Key="VolumeSliderThumbIconColor">#f9f9f9</Color>
+    <Color x:Key="VolumeSliderThumbLeftColor">#a0a0a0</Color>
+    <Color x:Key="VolumeSliderThumbRightColor">#505050</Color>
+
+    <!--关闭按钮鼠标移入时的背景颜色-->
+    <Color x:Key="CloseButtonMouseOverBackgroundUpColor">#db5972</Color>
+    <Color x:Key="CloseButtonMouseOverBackgroundDownColor">#a62631</Color>
+
+    <!--关闭按钮鼠标按下时的背景颜色-->
+    <Color x:Key="CloseButtonPressedBackgroundUpColor">#a42530</Color>
+    <Color x:Key="CloseButtonPressedBackgroundDownColor">#d9546e</Color>
+
+    <!--按钮鼠标移入时的背景颜色-->
+    <Color x:Key="ButtonMouseOverBackgroundLightColor">#8d8d8d</Color>
+    <Color x:Key="ButtonMouseOverBackgroundMediumColor">#5a5a5b</Color>
+    <Color x:Key="ButtonMouseOverBackgroundDarkColor">#6d6d6f</Color>
+
+    <!--播放控制区域的背景色-->
+    <Color x:Key="PlayControlBackgroundLightColor">#3f3f41</Color>
+    <Color x:Key="PlayControlBackgroundMediumColor">#39393b</Color>
+    <Color x:Key="PlayControlBackgroundDarkColor">#353537</Color>
+</ResourceDictionary>

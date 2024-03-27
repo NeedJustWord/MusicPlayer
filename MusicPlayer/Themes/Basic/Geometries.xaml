@@ -1,0 +1,60 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:o="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--菜单-->
+    <Geometry o:Freeze="True" x:Key="MenuGeometry">M4,3 h10 v8 h -10 z M5,6 h7 M6,7 h5 M7,8 h3 M8,9 h1</Geometry>
+    <!--迷你模式-->
+    <Geometry o:Freeze="True" x:Key="MiniStyleGeometry">M4,3 h9 v1 h-7 v7 h-1 v-8 M6,5 h2 M6,6 h3 M7,7 h3 M8,8 h3 M9,9 h3 M10,10 h3 M11,11 h2</Geometry>
+    <!--最小化-->
+    <Geometry o:Freeze="True" x:Key="MinGeometry">M4,6 h9 v1 h-9</Geometry>
+    <!--关闭-->
+    <Geometry o:Freeze="True" x:Key="CloseGeometry">M4,4 h2 M4,5 h3 M5,6 h3 M11,4 h2 M10,5 h3 M9,6 h3 M5,10 h3 M4,11 h3 M4,12 h2 M9,10 h3 M10,11 h3 M11,12 h2 M6,7 h5 M7,8 h3 M6,9 h5</Geometry>
+
+    <!--停止-->
+    <Geometry o:Freeze="True" x:Key="StopGeometry">M7,7 h7 v7 h-7 z M8,8 h5 v5 h-5 z M9,9 h3 v3 h-3 z M10,10 h1 v1 h-1 z</Geometry>
+    <!--上一首-->
+    <Geometry o:Freeze="True" x:Key="PrevGeometry">M6,7 h1 v9 h-1 z M15,6 h1 v11 h-1 z M14,6 v10 M13,7 v8 M12,8 v6 M11,9 v4 M10,10 v2</Geometry>
+    <!--下一首-->
+    <Geometry o:Freeze="True" x:Key="NextGeometry">M15,7 h1 v9 h-1 z M6,6 h1 v11 h-1 z M8,6 v10 M9,7 v8 M10,8 v6 M11,9 v4 M12,10 v2</Geometry>
+    <!--播放-->
+    <Geometry o:Freeze="True" x:Key="PlayGeometry">M5,4 h3 v14 h-3 z M6,5 h1 v12 h-1 z M13,4 h3 v14 h-3 z M14,5 h1 v12 h-1 z</Geometry>
+    <!--暂停-->
+    <Geometry o:Freeze="True" x:Key="PauseGeometry">M6,3 h1 v15 h-1 z M8,3 v14 M9,5 h1 v11 h-1 z M11,5 v10 M12,6 v8 M13,8 h1 v5 h-1 z M15,8 v4 M16,10 h1 v1 h-1 z</Geometry>
+    <Geometry o:Freeze="True" x:Key="PauseGeometry1">M6,2 L17,10 M6,18 L17,10</Geometry>
+    <!--音量-->
+    <Geometry o:Freeze="True" x:Key="VolumeGeometry">M5,9 h2 v3 h-2 z M6,9 v2 M8,7 v6 M9,6 v8 M10,5 v10 M14,8 v4 M15,6 v1 M15,13 v1 M16,7 v6</Geometry>
+    <!--静音-->
+    <Geometry o:Freeze="True" x:Key="MuteGeometry">M4,15 L13,5</Geometry>
+
+    <!--暂停状态-->
+    <Geometry o:Freeze="True" x:Key="PauseStatusGeometry">M5,9 h2 v3 h-2 z M6,9 v2 M8,7 v6 M9,6 v8 M10,5 v10</Geometry>
+    <!--播放状态-->
+    <Geometry o:Freeze="True" x:Key="PlayStatusGeometry">M5,9 h2 v3 h-2 z M6,9 v2 M8,7 v6 M9,6 v8 M10,5 v10 M13,8 v4 M14,9 v2 M15,6 v1 M15,13 v1 M16,7 v6 M17,8 v4</Geometry>
+
+    <!--添加-->
+    <Geometry o:Freeze="True" x:Key="AddGeometry">M5,9 h9 v1 h-9 z M9,5 h1 v9 h-1 z</Geometry>
+    <!--删除-->
+    <Geometry o:Freeze="True" x:Key="DeleteGeometry">M4,6 h2 M4,7 h3 M5,8 h3 M11,6 h2 M10,7 h3 M9,8 h3 M5,12 h3 M4,13 h3 M4,14 h2 M9,12 h3 M10,13 h3 M11,14 h2 M6,9 h5 M7,10 h3 M6,11 h5</Geometry>
+    <!--查找-->
+    <Geometry o:Freeze="True" x:Key="LookupGeometry">M8.0001,4 A4,4 0 1 1 8,4 M11,11 L14,14</Geometry>
+    <!--顺序播放-->
+    <Geometry o:Freeze="True" x:Key="SequentialGeometry">M5,6 h8 v1 h-8 z M5,11 h8 v1 h-8 z M12,4 v4 M12,9 v4</Geometry>
+    <!--循环播放-->
+    <Geometry o:Freeze="True" x:Key="LoopGeometry">M5,7 h8 v-1 h-8 z v2 M11,3 v6 M12,4 v4 M13,12 h-8 v1 h8 z v-3 M7,9 v6 M6,10 v4</Geometry>
+    <!--随机播放-->
+    <Geometry o:Freeze="True" x:Key="RandomGeometry">M13,4 v4 M13,9 v4 M3,6 h4 M10,6 h4 M3,12 h4 M10,12 h4 M3,7 h5 M9,7 h5 M3,11 h5 M9,11 h5 M6,8 h5 M6,10 h5 M7,9 h3</Geometry>
+    <!--单曲循环-->
+    <Geometry o:Freeze="True" x:Key="SingleGeometry">M4,5 v2 M10,10 v4 M3,13 h4 M5,5 h1 v7 h-1 z M14,7 h-5 v-1 h5 v7 h-5 v-1 h4</Geometry>
+
+    <!--音量滑块-->
+    <Geometry o:Freeze="True" x:Key="VolumeSliderThumbGeometry">M5.5001,0 A5.5,5.5 0 1 1 5.5,0</Geometry>
+
+    <!--歌词-->
+    <Geometry o:Freeze="True" x:Key="LyricGeometry">M4,4 h6 v7 h-6 z M4,6 h8 v7 h-6 v-2 M4,8 h4 v2 h-4 M9,6 v4</Geometry>
+
+    <!--滚动条-->
+    <Geometry o:Freeze="True" x:Key="ScrollBarLineButtonUpGeometry">M2,6 h5 M3,5 h3 M4,4 h1</Geometry>
+    <Geometry o:Freeze="True" x:Key="ScrollBarLineButtonDownGeometry">M2,4 h5 M3,5 h3 M4,6 h1</Geometry>
+    <Geometry o:Freeze="True" x:Key="ScrollBarLineButtonLeftGeometry">M6,2 v5 M5,3 v3 M4,4 v1</Geometry>
+    <Geometry o:Freeze="True" x:Key="ScrollBarLineButtonRightGeometry">M4,2 v5 M5,3 v3 M6,4 v1</Geometry>
+</ResourceDictionary>

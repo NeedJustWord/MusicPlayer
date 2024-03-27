@@ -69,12 +69,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\Attacheds\IconElement.cs" />
+    <Compile Include="Controls\Attacheds\IconTriggerElement.cs" />
+    <Compile Include="Controls\Attacheds\MultiIconElement.cs" />
+    <Compile Include="Controls\Attacheds\OffsetElement.cs" />
     <Compile Include="Controls\Attacheds\ToolTipService.cs" />
-    <Compile Include="Controls\BaseButton.cs" />
     <Compile Include="Controls\BaseSlider.cs" />
-    <Compile Include="Converters\BitmapSourceConverter.cs" />
     <Compile Include="Converters\BoolConverter.cs" />
-    <Compile Include="Converters\FormatConverter.cs" />
     <Compile Include="Converters\ObservableCollectionConverter.cs" />
     <Compile Include="Converters\MarginConverter.cs" />
     <Compile Include="Converters\OpacityConverter.cs" />
@@ -96,6 +97,18 @@
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Page Include="Themes\AboutWindowStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Basic\Brushes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Basic\Colors\Colors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Basic\Geometries.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -177,38 +190,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\album.png" />
-    <Resource Include="Images\Close.png" />
-    <Resource Include="Images\CloseDown.png" />
-    <Resource Include="Images\CloseEnter.png" />
-    <Resource Include="Images\Menu.png" />
-    <Resource Include="Images\Min.png" />
-    <Resource Include="Images\MiniStyle.png" />
-    <Resource Include="Images\Mute.png" />
-    <Resource Include="Images\Next.png" />
-    <Resource Include="Images\Play.png" />
-    <Resource Include="Images\PauseStatus.png" />
-    <Resource Include="Images\Pause.png" />
-    <Resource Include="Images\PlayStatus.png" />
-    <Resource Include="Images\Prev.png" />
-    <Resource Include="Images\Stop.png" />
-    <Resource Include="Images\Volume.png" />
+    <Resource Include="Images\MusicSliderThumb.bmp" />
+    <Resource Include="Images\SkinIcon.bmp" />
     <Resource Include="MusicPlayer.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\MusicSliderThumb.png" />
-    <Resource Include="Images\VolumeSliderThumb.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\SkinIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Add.png" />
-    <Resource Include="Images\Delete.png" />
-    <Resource Include="Images\Lookup.png" />
-    <Resource Include="Images\Loop.png" />
-    <Resource Include="Images\Sequential.png" />
-    <Resource Include="Images\Random.png" />
-    <Resource Include="Images\Single.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Lib\GalaSoft.MvvmLight.dll" />

@@ -2,35 +2,17 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace MusicPlayer.Converters
 {
-    class PlayStatusToImageConverter : IValueConverter
+    class PlayStatusToIconConverter : IMultiValueConverter
     {
-        private readonly string[] _btnImages = { "/Images/Play.png", "/Images/Pause.png" };
-        private readonly string[] _gridViewImages = { "/Images/PlayStatus.png", "/Images/PauseStatus.png" };
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            string[] images = parameter.ToString() == "Button" ? _btnImages : _gridViewImages;
-
-            PlayStatus status = (PlayStatus)value;
-            ImageSource result = null;
-            switch (status)
-            {
-                case PlayStatus.Play:
-                    result = new BitmapImage(new Uri(images[0], UriKind.Relative));
-                    break;
-                case PlayStatus.Pause:
-                    result = new BitmapImage(new Uri(images[1], UriKind.Relative));
-                    break;
-            }
-            return result;
+            return values == null || (PlayStatus)values[2] == PlayStatus.Normal ? null : values[(int)values[2] - 1];
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

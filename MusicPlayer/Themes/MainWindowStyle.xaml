@@ -6,19 +6,6 @@
         <ResourceDictionary Source="GlobalStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <SolidColorBrush x:Key="MenuButtonBorderIsMouseOverBackground" Color="White" Opacity="0.1"/>
-    <SolidColorBrush x:Key="MenuButtonBorderIsPressedBackground" Color="White" Opacity="0.2"/>
-
-    <LinearGradientBrush x:Key="PlayControlBackground" StartPoint="0,0" EndPoint="0,1">
-        <LinearGradientBrush.GradientStops>
-            <GradientStopCollection>
-                <GradientStop Color="#3f3f41" Offset="0.0" />
-                <GradientStop Color="#39393b" Offset="0.5" />
-                <GradientStop Color="#353537" Offset="1" />
-            </GradientStopCollection>
-        </LinearGradientBrush.GradientStops>
-    </LinearGradientBrush>
-
     <Style x:Key="MenuButtonBorderStyle" TargetType="Border" BasedOn="{StaticResource ButtonBorder}">
         <Setter Property="CornerRadius" Value="3" />
     </Style>
@@ -56,10 +43,12 @@
         <Setter Property="controls:ToolTipService.ShowToolTipWhenTextTrimming" Value="True"/>
     </Style>
 
-    <Style x:Key="SkinIconStyle" TargetType="controls:BaseButton" BasedOn="{StaticResource BaseButtonStyle}">
+    <Style x:Key="SkinIconStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="Width" Value="18" />
         <Setter Property="Height" Value="18"/>
-        <Setter Property="NormalImage" Value="/Images/SkinIcon.png"/>
+        <Setter Property="controls:IconElement.Width" Value="12"/>
+        <Setter Property="controls:IconElement.Height" Value="12"/>
+        <Setter Property="controls:IconElement.Image" Value="/Images/SkinIcon.bmp"/>
     </Style>
 
     <Style x:Key="MusicTimeStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockFont}">
@@ -69,45 +58,63 @@
 
     <!-- 播放控制 -->
     <Style x:Key="PlayControlStyle" TargetType="Grid">
-        <Setter Property="Background" Value="{StaticResource PlayControlBackground}"/>
+        <Setter Property="Background" Value="{StaticResource PlayControlBackgroundBrush}"/>
     </Style>
 
     <Style x:Key="MusicSliderStyle" TargetType="controls:BaseSlider" BasedOn="{StaticResource BaseSliderStyle}">
         <Setter Property="Height" Value="4"/>
         <Setter Property="IsShowBorder" Value="False"/>
-        <Setter Property="LeftBrush" Value="#009fe3"/>
-        <Setter Property="RightBrush" Value="#19596b"/>
-        <Setter Property="ThumbImage" Value="/Images/MusicSliderThumb.png"/>
+        <Setter Property="LeftBrush" Value="{StaticResource MusicSliderThumbLeftColorBrush}"/>
+        <Setter Property="RightBrush" Value="{StaticResource MusicSliderThumbRightColorBrush}"/>
         <Setter Property="IsPlayProgress" Value="True"/>
+        <Setter Property="controls:IconElement.Width" Value="15"/>
+        <Setter Property="controls:IconElement.Height" Value="4"/>
+        <Setter Property="controls:IconElement.Image" Value="/Images/MusicSliderThumb.bmp"/>
     </Style>
     <Style x:Key="VolumeSliderStyle" TargetType="controls:BaseSlider" BasedOn="{StaticResource BaseSliderStyle}">
         <Setter Property="Height" Value="16"/>
         <Setter Property="Width" Value="60"/>
         <Setter Property="Thickness" Value="6"/>
+        <Setter Property="controls:IconElement.Width" Value="11"/>
+        <Setter Property="controls:IconElement.Height" Value="11"/>
+        <Setter Property="controls:IconElement.EdgeMode" Value="Unspecified"/>
+        <Setter Property="controls:IconElement.Icon" Value="{StaticResource VolumeSliderThumbGeometry}"/>
+        <Setter Property="controls:IconElement.Color" Value="{StaticResource VolumeSliderThumbIconColorBrush}"/>
     </Style>
 
-    <Style x:Key="BaseControlButtonStyle" TargetType="controls:BaseButton" BasedOn="{StaticResource BaseButtonStyle}">
+    <Style x:Key="BaseControlButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="Width" Value="21"/>
         <Setter Property="Height" Value="21"/>
+        <Setter Property="controls:IconElement.Width" Value="21"/>
+        <Setter Property="controls:IconElement.Height" Value="21"/>
+        <Setter Property="controls:IconElement.Color" Value="{StaticResource ControlIconColorBrush}"/>
     </Style>
-    <Style x:Key="BtnStopStyle" TargetType="controls:BaseButton" BasedOn="{StaticResource BaseControlButtonStyle}">
+    <Style x:Key="BtnStopStyle" TargetType="Button" BasedOn="{StaticResource BaseControlButtonStyle}">
         <!--<Setter Property="Content" Value="停止"/>-->
-        <Setter Property="NormalImage" Value="/Images/Stop.png"/>
+        <Setter Property="controls:IconElement.Icon" Value="{StaticResource StopGeometry}"/>
     </Style>
-    <Style x:Key="BtnPrevStyle" TargetType="controls:BaseButton" BasedOn="{StaticResource BaseControlButtonStyle}">
+    <Style x:Key="BtnPrevStyle" TargetType="Button" BasedOn="{StaticResource BaseControlButtonStyle}">
         <!--<Setter Property="Content" Value="上一曲"/>-->
-        <Setter Property="NormalImage" Value="/Images/Prev.png"/>
+        <Setter Property="controls:IconElement.Icon" Value="{StaticResource PrevGeometry}"/>
     </Style>
-    <Style x:Key="BtnPlayPauseStyle" TargetType="controls:BaseButton" BasedOn="{StaticResource BaseControlButtonStyle}">
+    <Style x:Key="BtnPlayPauseStyle" TargetType="Button" BasedOn="{StaticResource BaseControlButtonStyle}">
         <!--<Setter Property="Content" Value="播放暂停"/>-->
-        <Setter Property="NormalImage" Value="/Images/Play.png"/>
+        <Setter Property="controls:IconElement.Icon" Value="{StaticResource PlayGeometry}"/>
+        <Setter Property="controls:MultiIconElement.Color1" Value="{StaticResource ControlIconColorBrush}"/>
+        <Setter Property="controls:MultiIconElement.EdgeMode1" Value="Unspecified"/>
+        <Setter Property="controls:MultiIconElement.StrokeThickness1" Value="1"/>
     </Style>
-    <Style x:Key="BtnNextStyle" TargetType="controls:BaseButton" BasedOn="{StaticResource BaseControlButtonStyle}">
+    <Style x:Key="BtnNextStyle" TargetType="Button" BasedOn="{StaticResource BaseControlButtonStyle}">
         <!--<Setter Property="Content" Value="下一曲"/>-->
-        <Setter Property="NormalImage" Value="/Images/Next.png"/>
+        <Setter Property="controls:IconElement.Icon" Value="{StaticResource NextGeometry}"/>
     </Style>
-    <Style x:Key="BtnMuteStyle" TargetType="controls:BaseButton" BasedOn="{StaticResource BaseControlButtonStyle}">
+    <Style x:Key="BtnMuteStyle" TargetType="Button" BasedOn="{StaticResource BaseControlButtonStyle}">
         <!--<Setter Property="Content" Value="音量"/>-->
+        <Setter Property="controls:IconElement.Icon" Value="{StaticResource VolumeGeometry}"/>
+        <Setter Property="controls:IconElement.Color" Value="{StaticResource VolumeButtonIconColorBrush}"/>
+        <Setter Property="controls:MultiIconElement.Color1" Value="{StaticResource MuteButtonIconColorBrush}"/>
+        <Setter Property="controls:MultiIconElement.EdgeMode1" Value="Unspecified"/>
+        <Setter Property="controls:MultiIconElement.StrokeThickness1" Value="2"/>
     </Style>
 
     <!-- 音乐列表 -->
@@ -140,18 +147,34 @@
         <Setter Property="Height" Value="18"/>
         <Setter Property="Margin" Value="10,0,0,0"/>
         <Setter Property="Placement" Value="Top"/>
+        <Setter Property="controls:IconElement.Width" Value="18"/>
+        <Setter Property="controls:IconElement.Height" Value="18"/>
+        <Setter Property="controls:IconElement.Color" Value="{StaticResource MenuIconColorBrush}"/>
     </Style>
     <Style x:Key="BtnAddStyle" TargetType="controls:MenuButton" BasedOn="{StaticResource MenuButtonStyle}">
         <Setter Property="Content" Value="添加"/>
-        <Setter Property="NormalImage" Value="/Images/Add.png"/>
+        <Setter Property="controls:IconElement.Icon" Value="{StaticResource AddGeometry}"/>
     </Style>
     <Style x:Key="BtnDeleteStyle" TargetType="controls:MenuButton" BasedOn="{StaticResource MenuButtonStyle}">
         <Setter Property="Content" Value="删除"/>
-        <Setter Property="NormalImage" Value="/Images/Delete.png"/>
+        <Setter Property="controls:IconElement.Icon" Value="{StaticResource DeleteGeometry}"/>
     </Style>
     <Style x:Key="BtnLookUpStyle" TargetType="controls:MenuButton" BasedOn="{StaticResource MenuButtonStyle}">
         <Setter Property="Content" Value="查找"/>
-        <Setter Property="NormalImage" Value="/Images/Lookup.png"/>
+        <Setter Property="controls:IconElement.Icon" Value="{StaticResource LookupGeometry}"/>
+        <Setter Property="controls:IconElement.StrokeThickness" Value="2"/>
+        <Setter Property="controls:IconElement.EdgeMode" Value="Unspecified"/>
     </Style>
     <Style x:Key="BtnOrderStyle" TargetType="controls:MenuButton" BasedOn="{StaticResource MenuButtonStyle}"/>
+
+    <Style x:Key="BtnLyricStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="Width" Value="44"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Margin" Value="0,3,10,0"/>
+        <Setter Property="Content" Value="歌词"/>
+        <Setter Property="controls:IconElement.Width" Value="16"/>
+        <Setter Property="controls:IconElement.Height" Value="16"/>
+        <Setter Property="controls:IconElement.Icon" Value="{StaticResource LyricGeometry}"/>
+        <Setter Property="controls:IconElement.Color" Value="{StaticResource MenuIconColorBrush}"/>
+    </Style>
 </ResourceDictionary>

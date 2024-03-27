@@ -5,7 +5,6 @@
     <FontFamily x:Key="BaseFontFamily">新宋体</FontFamily>
     <system:Double x:Key="BaseFontSmallSize">12</system:Double>
     <system:Double x:Key="BaseFontBigSize">13</system:Double>
-    <SolidColorBrush x:Key="BaseForeground" Color="White"/>
 
     <Style x:Key="LineStyle" TargetType="Line">
         <Setter Property="StrokeThickness" Value="1"/>
@@ -20,14 +19,14 @@
     <Style x:Key="BaseControlFont" TargetType="Control">
         <Setter Property="FontFamily" Value="{StaticResource BaseFontFamily}"/>
         <Setter Property="FontSize" Value="{StaticResource BaseFontSmallSize}"/>
-        <Setter Property="Foreground" Value="{StaticResource BaseForeground}"/>
+        <Setter Property="Foreground" Value="{StaticResource FontColorBrush}"/>
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
     </Style>
 
     <Style x:Key="BaseTextBlockFont" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource BaseFontFamily}"/>
         <Setter Property="FontSize" Value="{StaticResource BaseFontBigSize}"/>
-        <Setter Property="Foreground" Value="{StaticResource BaseForeground}"/>
+        <Setter Property="Foreground" Value="{StaticResource FontColorBrush}"/>
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
     </Style>
 

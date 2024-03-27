@@ -1,0 +1,78 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--字体颜色-->
+    <SolidColorBrush x:Key="FontColorBrush" Color="{DynamicResource FontColor}"/>
+
+    <!--窗体图标颜色-->
+    <SolidColorBrush x:Key="WindowIconColorBrush" Color="{DynamicResource WindowIconColor}"/>
+    <!--音乐控制按钮图标颜色-->
+    <SolidColorBrush x:Key="ControlIconColorBrush" Color="{DynamicResource ControlIconColor}"/>
+    <!--菜单图标颜色-->
+    <SolidColorBrush x:Key="MenuIconColorBrush" Color="{DynamicResource MenuIconColor}"/>
+
+    <!--播放暂停状态按钮图标颜色-->
+    <SolidColorBrush x:Key="PlayPauseStatusButtonIconColorBrush" Color="{DynamicResource PlayPauseStatusButtonIconColor}"/>
+
+    <!--音量按钮图标颜色-->
+    <SolidColorBrush x:Key="VolumeButtonIconColorBrush" Color="{DynamicResource VolumeButtonIconColor}"/>
+    <!--静音按钮图标颜色-->
+    <LinearGradientBrush x:Key="MuteButtonIconColorBrush" StartPoint="13,5" EndPoint="4,15">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="{DynamicResource MuteButtonIconUpColor}" Offset="0.0" />
+                <GradientStop Color="{DynamicResource MuteButtonIconDownColor}" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <!--播放进度条左边、右边颜色-->
+    <SolidColorBrush x:Key="MusicSliderThumbLeftColorBrush" Color="{DynamicResource MusicSliderThumbLeftColor}"/>
+    <SolidColorBrush x:Key="MusicSliderThumbRightColorBrush" Color="{DynamicResource MusicSliderThumbRightColor}"/>
+
+    <!--音量进度条图标、左边、右边颜色-->
+    <SolidColorBrush x:Key="VolumeSliderThumbIconColorBrush" Color="{DynamicResource VolumeSliderThumbIconColor}"/>
+    <SolidColorBrush x:Key="VolumeSliderThumbLeftColorBrush" Color="{DynamicResource VolumeSliderThumbLeftColor}"/>
+    <SolidColorBrush x:Key="VolumeSliderThumbRightColorBrush" Color="{DynamicResource VolumeSliderThumbRightColor}"/>
+
+    <!--关闭按钮鼠标移入时的背景颜色-->
+    <LinearGradientBrush x:Key="CloseButtonMouseOverBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="{DynamicResource CloseButtonMouseOverBackgroundUpColor}" Offset="0.0" />
+                <GradientStop Color="{DynamicResource CloseButtonMouseOverBackgroundDownColor}" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <!--关闭按钮鼠标点击时的背景颜色-->
+    <LinearGradientBrush x:Key="CloseButtonPressedBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="{DynamicResource CloseButtonPressedBackgroundUpColor}" Offset="0.0" />
+                <GradientStop Color="{DynamicResource CloseButtonPressedBackgroundDownColor}" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <!--鼠标移入时按钮的背景颜色-->
+    <LinearGradientBrush x:Key="ButtonMouseOverBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="{DynamicResource ButtonMouseOverBackgroundLightColor}" Offset="0.0" />
+                <GradientStop Color="{DynamicResource ButtonMouseOverBackgroundMediumColor}" Offset="0.5" />
+                <GradientStop Color="{DynamicResource ButtonMouseOverBackgroundDarkColor}" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <!--播放控制区域的背景色-->
+    <LinearGradientBrush x:Key="PlayControlBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="{DynamicResource PlayControlBackgroundLightColor}" Offset="0.0" />
+                <GradientStop Color="{DynamicResource PlayControlBackgroundMediumColor}" Offset="0.5" />
+                <GradientStop Color="{DynamicResource PlayControlBackgroundDarkColor}" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+</ResourceDictionary>

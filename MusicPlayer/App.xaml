@@ -10,18 +10,21 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Basic/Colors/Colors.xaml" />
+                <ResourceDictionary Source="Themes/Basic/Geometries.xaml" />
+                <ResourceDictionary Source="Themes/Basic/Brushes.xaml" />
                 <ResourceDictionary Source="Themes/BaseWindowStyle.xaml" />
                 <ResourceDictionary Source="Themes/AboutWindowStyle.xaml"/>
                 <ResourceDictionary Source="Themes/MainWindowStyle.xaml" />
                 <ResourceDictionary Source="Themes/ControlStyle.xaml"/>
                 <ResourceDictionary>
                     <viewModel:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
-                    <converters:BoolToImageSourceConverter x:Key="BoolToImageSourceConverter"/>
-                    <converters:IntFormatConverter x:Key="IntFormatConverter"/>
+                    <converters:BoolToIconConverter x:Key="BoolToIconConverter"/>
                     <converters:ObservableCollectionToEnabledConverter x:Key="ObservableCollectionToEnabledConverter"/>
                     <converters:SubStringConverter x:Key="SubStringConverter"/>
                     <converters:PlayModeToBoolConverter x:Key="PlayModeToBoolConverter"/>
-                    <converters:PlayStatusToImageConverter x:Key="PlayStatusToImageConverter"/>
+                    <converters:PlayModeToIconConverter x:Key="PlayModeToIconConverter"/>
+                    <converters:PlayStatusToIconConverter x:Key="PlayStatusToIconConverter"/>
                     <converters:PlayStatusToVisibilityConverter x:Key="PlayStatusToVisibilityConverter"/>
                     <converters:TimeLengthConverter x:Key="TimeLengthConverter"/>
                     <converters:TimeSpanConverter x:Key="TimeSpanConverter"/>

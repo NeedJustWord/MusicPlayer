@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media.Imaging;
 
 namespace MusicPlayer.Converters
 {
@@ -23,12 +22,11 @@ namespace MusicPlayer.Converters
         }
     }
 
-    class BoolToImageSourceConverter : IValueConverter
+    class BoolToIconConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string uriString = (bool)value ? "/Images/Mute.png" : "/Images/Volume.png";
-            return new BitmapImage(new Uri(uriString, UriKind.Relative));
+            return (bool)value ? Application.Current.Resources["MuteGeometry"] : null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

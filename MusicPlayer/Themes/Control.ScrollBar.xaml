@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush x:Key="ScrollBarBackground" Color="#1a1a1c"/>
 
-    <Style x:Key="ScrollBarLineButtonLineStyle" TargetType="Line">
+    <Style x:Key="ScrollBarLineButtonPathStyle" TargetType="Path">
+        <Setter Property="RenderOptions.EdgeMode" Value="Aliased"/>
         <Setter Property="StrokeThickness" Value="1"/>
         <Setter Property="Stroke" Value="#eaeaea"/>
     </Style>
@@ -70,24 +71,16 @@
                             Background="{StaticResource NormalBackground}">
                         <StackPanel>
                             <Canvas x:Name="up">
-                                <Line X1="2" Y1="6" X2="7" Y2="6" Style="{StaticResource ScrollBarLineButtonLineStyle}"/>
-                                <Line X1="3" Y1="5" X2="6" Y2="5" Style="{StaticResource ScrollBarLineButtonLineStyle}"/>
-                                <Line X1="4" Y1="4" X2="4" Y2="7" Style="{StaticResource ScrollBarLineButtonLineStyle}"/>
+                                <Path Style="{StaticResource ScrollBarLineButtonPathStyle}" Data="{StaticResource ScrollBarLineButtonUpGeometry}"/>
                             </Canvas>
                             <Canvas x:Name="down">
-                                <Line X1="2" Y1="4" X2="7" Y2="4" Style="{StaticResource ScrollBarLineButtonLineStyle}"/>
-                                <Line X1="3" Y1="5" X2="6" Y2="5" Style="{StaticResource ScrollBarLineButtonLineStyle}"/>
-                                <Line X1="4" Y1="4" X2="4" Y2="7" Style="{StaticResource ScrollBarLineButtonLineStyle}"/>
+                                <Path Style="{StaticResource ScrollBarLineButtonPathStyle}" Data="{StaticResource ScrollBarLineButtonDownGeometry}"/>
                             </Canvas>
                             <Canvas x:Name="left">
-                                <Line X1="6" Y1="2" X2="6" Y2="7" Style="{StaticResource ScrollBarLineButtonLineStyle}"/>
-                                <Line X1="5" Y1="3" X2="5" Y2="6" Style="{StaticResource ScrollBarLineButtonLineStyle}"/>
-                                <Line X1="4" Y1="4" X2="7" Y2="4" Style="{StaticResource ScrollBarLineButtonLineStyle}"/>
+                                <Path Style="{StaticResource ScrollBarLineButtonPathStyle}" Data="{StaticResource ScrollBarLineButtonLeftGeometry}"/>
                             </Canvas>
                             <Canvas x:Name="right">
-                                <Line X1="4" Y1="2" X2="4" Y2="7" Style="{StaticResource ScrollBarLineButtonLineStyle}"/>
-                                <Line X1="5" Y1="3" X2="5" Y2="6" Style="{StaticResource ScrollBarLineButtonLineStyle}"/>
-                                <Line X1="4" Y1="4" X2="7" Y2="4" Style="{StaticResource ScrollBarLineButtonLineStyle}"/>
+                                <Path Style="{StaticResource ScrollBarLineButtonPathStyle}" Data="{StaticResource ScrollBarLineButtonRightGeometry}"/>
                             </Canvas>
                         </StackPanel>
                     </Border>

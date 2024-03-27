@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Media;
 using System.Xml.Serialization;
 using GalaSoft.MvvmLight;
 
@@ -53,26 +52,17 @@ namespace MusicPlayer.Models
             get { return _playMode; }
             set
             {
-                _playMode = value;
+                Set("PlayMode", ref _playMode, value);
                 PlayModeText = GlobalInfo.PlayModeTexts[(int)value];
-                PlayModeImage = GlobalInfo.PlayModeImages[(int)value];
             }
         }
 
-        private string _playModeText;
+        private string _playModeText = GlobalInfo.PlayModeTexts[0];
         [XmlIgnore]
         public string PlayModeText
         {
             get { return _playModeText; }
             set { Set("PlayModeText", ref _playModeText, value); }
-        }
-
-        private ImageSource _playModeImage;
-        [XmlIgnore]
-        public ImageSource PlayModeImage
-        {
-            get { return _playModeImage; }
-            set { Set("PlayModeImage", ref _playModeImage, value); }
         }
 
         private PlayStatus _playStatus;

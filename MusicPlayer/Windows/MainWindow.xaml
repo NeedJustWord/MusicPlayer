@@ -55,7 +55,7 @@
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource MusicNameStyle}" Text="{Binding ConfigInfo.MusicName}"/>
                 <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource SingerStyle}" Text="{Binding ConfigInfo.Singer}"/>
-                <controls:BaseButton Grid.Row="0" Grid.Column="1" Style="{StaticResource SkinIconStyle}"/>
+                <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource SkinIconStyle}"/>
                 <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource MusicTimeStyle}" Text="{Binding ConfigInfo.MusicTime}"/>
             </Grid>
         </Grid>
@@ -66,8 +66,12 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
 
-            <controls:BaseSlider x:Name="MusicSlider" Style="{StaticResource MusicSliderStyle}" Minimum="0" Maximum="{Binding ConfigInfo.TimeLength,Converter={StaticResource TimeLengthConverter}}" Value="{Binding ConfigInfo.Position,Converter={StaticResource TimeSpanConverter}}">
+            <controls:BaseSlider Grid.ColumnSpan="2" x:Name="MusicSlider" Style="{StaticResource MusicSliderStyle}" Minimum="0" Maximum="{Binding ConfigInfo.TimeLength,Converter={StaticResource TimeLengthConverter}}" Value="{Binding ConfigInfo.Position,Converter={StaticResource TimeSpanConverter}}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="ValueChanged">
                         <i:InvokeCommandAction Command="{Binding PlayProgressChangedCommand}"/>
@@ -76,12 +80,26 @@
             </controls:BaseSlider>
 
             <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,1,0,1">
-                <controls:BaseButton Style="{StaticResource BtnStopStyle}" Command="{Binding StopCommand}"/>
-                <controls:BaseButton Style="{StaticResource BtnPrevStyle}" Command="{Binding PrevCommand}"/>
-                <controls:BaseButton Style="{StaticResource BtnPlayPauseStyle}" Command="{Binding PlayPauseCommand}" CommandParameter="{x:Null}"
-                                     NormalImage="{Binding Path=ConfigInfo.PlayStatus,Converter={StaticResource PlayStatusToImageConverter},ConverterParameter=Button}"/>
-                <controls:BaseButton Style="{StaticResource BtnNextStyle}" Command="{Binding NextCommand}"/>
-                <controls:BaseButton Style="{StaticResource BtnMuteStyle}" Command="{Binding MuteCommand}" NormalImage="{Binding ConfigInfo.IsMuted,Converter={StaticResource BoolToImageSourceConverter}}"/>
+                <Button Style="{StaticResource BtnStopStyle}" Command="{Binding StopCommand}"/>
+                <Button Style="{StaticResource BtnPrevStyle}" Command="{Binding PrevCommand}"/>
+                <Button Style="{StaticResource BtnPlayPauseStyle}" Command="{Binding PlayPauseCommand}" CommandParameter="{x:Null}">
+                    <controls:IconElement.Icon>
+                        <MultiBinding Converter="{StaticResource PlayStatusToIconConverter}">
+                            <Binding Source="{StaticResource PlayGeometry}"/>
+                            <Binding Source="{StaticResource PauseGeometry}"/>
+                            <Binding Path="ConfigInfo.PlayStatus"/>
+                        </MultiBinding>
+                    </controls:IconElement.Icon>
+                    <controls:MultiIconElement.Icon1>
+                        <MultiBinding Converter="{StaticResource PlayStatusToIconConverter}">
+                            <Binding Path="{x:Null}"/>
+                            <Binding Source="{StaticResource PauseGeometry1}"/>
+                            <Binding Path="ConfigInfo.PlayStatus"/>
+                        </MultiBinding>
+                    </controls:MultiIconElement.Icon1>
+                </Button>
+                <Button Style="{StaticResource BtnNextStyle}" Command="{Binding NextCommand}"/>
+                <Button Style="{StaticResource BtnMuteStyle}" Command="{Binding MuteCommand}" controls:MultiIconElement.Icon1="{Binding ConfigInfo.IsMuted,Converter={StaticResource BoolToIconConverter}}"/>
                 <controls:BaseSlider Style="{StaticResource VolumeSliderStyle}" Minimum="0" Maximum="1" Value="{Binding ConfigInfo.Volume,Mode=TwoWay}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="ValueChanged">
@@ -89,6 +107,9 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </controls:BaseSlider>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1">
+                <Button Style="{StaticResource BtnLyricStyle}" Command="{Binding LyricCommand}"/>
             </StackPanel>
         </Grid>
 
@@ -108,11 +129,18 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="models:MusicInfo">
                             <StackPanel Width="27">
-                                <Image Width="21" Height="20" RenderOptions.BitmapScalingMode="NearestNeighbor"
-                                       Source="{Binding Path=PlayStatus,Converter={StaticResource PlayStatusToImageConverter},ConverterParameter=GridView}"
-                                       Visibility="{Binding Path=PlayStatus,Converter={StaticResource PlayStatusToVisibilityConverter},ConverterParameter={x:Static Visibility.Collapsed}}"
-                                       />
-                                <TextBlock Margin="3,0,3,0" Text="{Binding Path=RowNum,Converter={StaticResource IntFormatConverter}}"
+                                <Path Width="21" Height="20" StrokeThickness="1" RenderOptions.EdgeMode="Aliased"
+                                      Stroke="{StaticResource PlayPauseStatusButtonIconColorBrush}"
+                                      Visibility="{Binding Path=PlayStatus,Converter={StaticResource PlayStatusToVisibilityConverter},ConverterParameter={x:Static Visibility.Collapsed}}">
+                                    <Path.Data>
+                                        <MultiBinding Converter="{StaticResource PlayStatusToIconConverter}">
+                                            <Binding Source="{StaticResource PlayStatusGeometry}"/>
+                                            <Binding Source="{StaticResource PauseStatusGeometry}"/>
+                                            <Binding Path="PlayStatus"/>
+                                        </MultiBinding>
+                                    </Path.Data>
+                                </Path>
+                                <TextBlock Margin="3,0,3,0" Text="{Binding Path=RowNum,StringFormat=D2}"
                                            Visibility="{Binding Path=PlayStatus,Converter={StaticResource PlayStatusToVisibilityConverter},ConverterParameter={x:Static Visibility.Visible}}"/>
                             </StackPanel>
                         </DataTemplate>
@@ -169,7 +197,16 @@
 
                 <controls:MenuButton x:Name="LookUp" Style="{StaticResource BtnLookUpStyle}"/>
 
-                <controls:MenuButton Style="{StaticResource BtnOrderStyle}" Content="{Binding ConfigInfo.PlayModeText}" NormalImage="{Binding ConfigInfo.PlayModeImage}">
+                <controls:MenuButton Style="{StaticResource BtnOrderStyle}" Content="{Binding ConfigInfo.PlayModeText}">
+                    <controls:IconElement.Icon>
+                        <MultiBinding Converter="{StaticResource PlayModeToIconConverter}">
+                            <Binding Source="{StaticResource SequentialGeometry}"/>
+                            <Binding Source="{StaticResource LoopGeometry}"/>
+                            <Binding Source="{StaticResource RandomGeometry}"/>
+                            <Binding Source="{StaticResource SingleGeometry}"/>
+                            <Binding Path="ConfigInfo.PlayMode"/>
+                        </MultiBinding>
+                    </controls:IconElement.Icon>
                     <Button.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="顺序播放"

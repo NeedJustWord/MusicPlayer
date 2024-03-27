@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using MusicPlayer.Helpers;
 using MusicPlayer.Models;
 
@@ -12,13 +10,6 @@ namespace MusicPlayer
         public static readonly string UpdateInfoToken = "UpdateInfo";
         public static readonly string UpdatePlayProgressToken = "UpdatePlayProgress";
         public static readonly string[] PlayModeTexts = { "顺序", "循环", "随机", "单曲" };
-        public static readonly ImageSource[] PlayModeImages =
-        {
-            new BitmapImage(new Uri("/Images/Sequential.png", UriKind.Relative)),
-            new BitmapImage(new Uri("/Images/Loop.png", UriKind.Relative)),
-            new BitmapImage(new Uri("/Images/Random.png", UriKind.Relative)),
-            new BitmapImage(new Uri("/Images/Single.png", UriKind.Relative))
-        };
         public static readonly Func<MusicInfo, string>[] OrderModeFuncs =
         {
             info => info.MusicName,

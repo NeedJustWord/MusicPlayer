@@ -5,96 +5,111 @@
         <ResourceDictionary Source="GlobalStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <Color x:Key="MouseOverBackgroundLightColor">#8d8d8d</Color>
-    <Color x:Key="MouseOverBackgroundMediumColor">#5a5a5b</Color>
-    <Color x:Key="MouseOverBackgroundDarkColor">#6d6d6f</Color>
-
-    <LinearGradientBrush x:Key="MouseOverBackground" StartPoint="0,0" EndPoint="0,1">
-        <LinearGradientBrush.GradientStops>
-            <GradientStopCollection>
-                <GradientStop Color="{StaticResource MouseOverBackgroundLightColor}" Offset="0.0" />
-                <GradientStop Color="{StaticResource MouseOverBackgroundMediumColor}" Offset="0.5" />
-                <GradientStop Color="{StaticResource MouseOverBackgroundDarkColor}" Offset="1" />
-            </GradientStopCollection>
-        </LinearGradientBrush.GradientStops>
-    </LinearGradientBrush>
-
-    <Style x:Key="BaseButtonStyle" TargetType="{x:Type controls:BaseButton}" BasedOn="{StaticResource BaseControlFont}">
+    <Style x:Key="BaseButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseControlFont}">
         <Setter Property="Width" Value="20" />
         <Setter Property="Height" Value="16" />
         <Setter Property="Margin" Value="1,0,0,0" />
-        <Setter Property="IsShifting" Value="True"/>
-        <Setter Property="ShiftingOffsetX" Value="1"/>
-        <Setter Property="ShiftingOffsetY" Value="1"/>
+        <Setter Property="controls:OffsetElement.IsOffset" Value="True"/>
+        <Setter Property="controls:OffsetElement.X" Value="1"/>
+        <Setter Property="controls:OffsetElement.Y" Value="1"/>
+        <Setter Property="controls:IconElement.Width" Value="20"/>
+        <Setter Property="controls:IconElement.Height" Value="16"/>
+        <Setter Property="controls:IconElement.StrokeThickness" Value="1"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:BaseButton}">
-                    <Border  Name="Border" CornerRadius="2">
-                        <Grid Background="Transparent">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Name="BorderMain" Background="Transparent" CornerRadius="2">
+                        <StackPanel Orientation="Horizontal">
+                            <Canvas Name="CanvasMain"
+                                    Width="{TemplateBinding controls:IconElement.Width}"
+                                    Height="{TemplateBinding controls:IconElement.Height}">
+                                <Path Name="PathMain" RenderOptions.EdgeMode="{TemplateBinding controls:IconElement.EdgeMode}"
+                                      StrokeThickness="{TemplateBinding controls:IconElement.StrokeThickness}"
+                                      Stroke="{TemplateBinding controls:IconElement.Color}"
+                                      Data="{TemplateBinding controls:IconElement.Icon}"/>
 
-                            <Image Name="ImageIcon" Source="{TemplateBinding NormalImage}" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                            <TextBlock Name="Txt" Grid.Column="1" Text="{TemplateBinding Content}" VerticalAlignment="Center" Margin="0,0,2,0"
-                                       FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}"/>
-                        </Grid>
+                                <Path Name="PathMain1" RenderOptions.EdgeMode="{TemplateBinding controls:MultiIconElement.EdgeMode1}"
+                                      StrokeThickness="{TemplateBinding controls:MultiIconElement.StrokeThickness1}"
+                                      Stroke="{TemplateBinding controls:MultiIconElement.Color1}"
+                                      Data="{TemplateBinding controls:MultiIconElement.Icon1}"/>
+                            </Canvas>
+                            <Image Name="ImageMain" Margin="3 0 0 0" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                   Source="{TemplateBinding controls:IconElement.Image}"
+                                   Width="{TemplateBinding controls:IconElement.Width}"
+                                   Height="{TemplateBinding controls:IconElement.Height}"
+                                  />
+                            <ContentPresenter Name="ContentPresenterMain" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </Border>
                     <ControlTemplate.Triggers>
                         <!-- 非偏移效果 -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsShifting" Value="False"/>
+                                <Condition Property="controls:OffsetElement.IsOffset" Value="False"/>
                                 <Condition Property="IsMouseOver" Value="True"/>
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
-                                <Setter Property="Source" TargetName="ImageIcon" Value="{Binding Path=(controls:BaseButton.MouseOverImage),RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"/>
+                                <Setter Property="Background" TargetName="CanvasMain" Value="{Binding Path=(controls:IconTriggerElement.MouseOverBackground),RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"/>
                             </MultiTrigger.Setters>
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsShifting" Value="False"/>
+                                <Condition Property="controls:OffsetElement.IsOffset" Value="False"/>
                                 <Condition Property="IsPressed" Value="True"/>
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
-                                <Setter Property="Source" TargetName="ImageIcon" Value="{Binding Path=(controls:BaseButton.PressedImage),RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"/>
+                                <Setter Property="Background" TargetName="CanvasMain" Value="{Binding Path=(controls:IconTriggerElement.PressedBackground),RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"/>
                             </MultiTrigger.Setters>
                         </MultiTrigger>
 
                         <!-- 偏移效果 -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsShifting" Value="True"/>
+                                <Condition Property="controls:OffsetElement.IsOffset" Value="True"/>
                                 <Condition Property="IsMouseOver" Value="True"/>
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
-                                <Setter Property="Background" TargetName="Border" Value="{StaticResource MouseOverBackground}"/>
+                                <Setter Property="Background" TargetName="BorderMain" Value="{StaticResource ButtonMouseOverBackgroundBrush}"/>
                             </MultiTrigger.Setters>
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsShifting" Value="True"/>
+                                <Condition Property="controls:OffsetElement.IsOffset" Value="True"/>
                                 <Condition Property="IsPressed" Value="True"/>
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
-                                <Setter Property="RenderTransform" TargetName="ImageIcon">
+                                <Setter Property="RenderTransform" TargetName="CanvasMain">
                                     <Setter.Value>
-                                        <TranslateTransform X="{Binding Path=(controls:BaseButton.ShiftingOffsetX),RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
-                                                            Y="{Binding Path=(controls:BaseButton.ShiftingOffsetY),RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"/>
+                                        <TranslateTransform X="{Binding Path=(controls:OffsetElement.X),RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
+                                                            Y="{Binding Path=(controls:OffsetElement.Y),RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"/>
                                     </Setter.Value>
                                 </Setter>
-                                <Setter Property="RenderTransform" TargetName="Txt">
+                                <Setter Property="RenderTransform" TargetName="ImageMain">
                                     <Setter.Value>
-                                        <TranslateTransform X="{Binding Path=(controls:BaseButton.ShiftingOffsetX),RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
-                                                            Y="{Binding Path=(controls:BaseButton.ShiftingOffsetY),RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"/>
+                                        <TranslateTransform X="{Binding Path=(controls:OffsetElement.X),RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
+                                                            Y="{Binding Path=(controls:OffsetElement.Y),RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="RenderTransform" TargetName="ContentPresenterMain">
+                                    <Setter.Value>
+                                        <TranslateTransform X="{Binding Path=(controls:OffsetElement.X),RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"
+                                                            Y="{Binding Path=(controls:OffsetElement.Y),RelativeSource={RelativeSource AncestorType=Button,Mode=FindAncestor}}"/>
                                     </Setter.Value>
                                 </Setter>
                             </MultiTrigger.Setters>
                         </MultiTrigger>
 
+                        <Trigger Property="controls:IconElement.Image" Value="{x:Null}">
+                            <Setter Property="Visibility" TargetName="ImageMain" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="controls:IconElement.Icon" Value="{x:Null}">
+                            <Setter Property="Visibility" TargetName="CanvasMain" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="controls:MultiIconElement.Icon1" Value="{x:Null}">
+                            <Setter Property="Visibility" TargetName="PathMain1" Value="Collapsed"/>
+                        </Trigger>
                         <Trigger Property="Content" Value="{x:Null}">
-                            <Setter Property="Margin" TargetName="Txt" Value="0"/>
+                            <Setter Property="Visibility" TargetName="ContentPresenterMain" Value="Collapsed"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
