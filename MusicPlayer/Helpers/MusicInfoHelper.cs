@@ -8,13 +8,13 @@ namespace MusicPlayer.Helpers
     {
         public static MusicInfo GetMusicInfo(string filePath)
         {
-            ShellClass sh = new ShellClass();
-            Folder dir = sh.NameSpace(Path.GetDirectoryName(filePath));
-            FolderItem item = dir.ParseName(Path.GetFileName(filePath));
+            var fileName = Path.GetFileName(filePath);
+            var dir = new ShellClass().NameSpace(Path.GetDirectoryName(filePath));
+            var item = dir.ParseName(fileName);
 
-            MusicInfo musicInfo = new MusicInfo
+            var musicInfo = new MusicInfo
             {
-                MusicName = GetMusicName(dir, item),
+                MusicName = GetMusicName(dir, item, fileName),
                 Singer = GetSinger(dir, item),
                 TimeLength = GetTimeLength(dir, item),
                 Album = GetAlbum(dir, item),
@@ -23,9 +23,10 @@ namespace MusicPlayer.Helpers
             return musicInfo;
         }
 
-        private static string GetMusicName(Folder dir, FolderItem item)
+        private static string GetMusicName(Folder dir, FolderItem item, string fileName)
         {
-            return dir.GetDetailsOf(item, 21);
+            var result = dir.GetDetailsOf(item, 21);
+            return string.IsNullOrEmpty(result) ? fileName : result;
         }
 
         private static string GetSinger(Folder dir, FolderItem item)

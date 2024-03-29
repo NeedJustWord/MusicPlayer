@@ -53,8 +53,12 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource MusicNameStyle}" Text="{Binding ConfigInfo.MusicName}"/>
-                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource SingerStyle}" Text="{Binding ConfigInfo.Singer}"/>
+                <Canvas Grid.Row="0" Grid.Column="0" ClipToBounds="True">
+                    <TextBlock Style="{StaticResource MusicInfoStyle}" Text="{Binding ConfigInfo.MusicName}"/>
+                </Canvas>
+                <Canvas Grid.Row="1" Grid.Column="0" ClipToBounds="True">
+                    <TextBlock Style="{StaticResource MusicInfoStyle}" Text="{Binding ConfigInfo.Singer}"/>
+                </Canvas>
                 <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource SkinIconStyle}"/>
                 <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource MusicTimeStyle}" Text="{Binding ConfigInfo.MusicTime}"/>
             </Grid>

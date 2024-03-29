@@ -33,14 +33,8 @@
         <Setter Property="Source" Value="/Images/album.png"/>
     </Style>
 
-    <Style x:Key="MusicNameStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockFont}">
-        <Setter Property="TextTrimming" Value="WordEllipsis"/>
-        <Setter Property="controls:ToolTipService.ShowToolTipWhenTextTrimming" Value="True"/>
-    </Style>
-
-    <Style x:Key="SingerStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockFont}">
-        <Setter Property="TextTrimming" Value="WordEllipsis"/>
-        <Setter Property="controls:ToolTipService.ShowToolTipWhenTextTrimming" Value="True"/>
+    <Style x:Key="MusicInfoStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockFont}">
+        <Setter Property="controls:RollingElement.IsRolling" Value="True"/>
     </Style>
 
     <Style x:Key="SkinIconStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">

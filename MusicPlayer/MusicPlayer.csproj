@@ -71,6 +71,7 @@
     </ApplicationDefinition>
     <Compile Include="Controls\Attacheds\IconElement.cs" />
     <Compile Include="Controls\Attacheds\IconTriggerElement.cs" />
+    <Compile Include="Controls\Attacheds\RollingElement.cs" />
     <Compile Include="Controls\Attacheds\MultiIconElement.cs" />
     <Compile Include="Controls\Attacheds\OffsetElement.cs" />
     <Compile Include="Controls\Attacheds\ToolTipService.cs" />
