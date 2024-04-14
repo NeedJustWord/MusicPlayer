@@ -39,6 +39,7 @@ namespace MusicPlayer.ViewModel
         public RelayCommand<int> DeleteMusicByAddTimeCommand { get; }
         public RelayCommand<int> DeleteMusicByPlayTimesCommand { get; }
         public RelayCommand<PlayMode> SetPlayModeCommand { get; }
+        public RelayCommand ChangePlayModeCommand { get; }
         public RelayCommand<OrderMode> OrderByCommand { get; }
         public RelayCommand StopCommand { get; }
         public RelayCommand PrevCommand { get; }
@@ -46,6 +47,8 @@ namespace MusicPlayer.ViewModel
         public RelayCommand<bool> NextCommand { get; }
         public RelayCommand MuteCommand { get; }
         public RelayCommand VolumeChangedCommand { get; }
+        public RelayCommand VolumeAddCommand { get; }
+        public RelayCommand VolumeSubtractCommand { get; }
         public RelayCommand PlayProgressChangedCommand { get; }
         #endregion
 
@@ -147,6 +150,12 @@ namespace MusicPlayer.ViewModel
             SetPlayModeCommand = new RelayCommand<PlayMode>(playMode =>
             {
                 ConfigInfo.PlayMode = playMode;
+            });
+            ChangePlayModeCommand = new RelayCommand(() =>
+            {
+                var playMode = (int)ConfigInfo.PlayMode + 1;
+                if (playMode > 3) playMode = 0;
+                ConfigInfo.PlayMode = (PlayMode)playMode;
             });
             OrderByCommand = new RelayCommand<OrderMode>(order =>
             {
@@ -259,6 +268,24 @@ namespace MusicPlayer.ViewModel
             VolumeChangedCommand = new RelayCommand(() =>
             {
                 MusicPlayHelper.SetVolume(ConfigInfo.Volume);
+            });
+            VolumeAddCommand = new RelayCommand(() =>
+            {
+                var value = ConfigInfo.Volume + 0.05;
+                if (value <= 1)
+                {
+                    ConfigInfo.Volume = value;
+                    MusicPlayHelper.SetVolume(ConfigInfo.Volume);
+                }
+            });
+            VolumeSubtractCommand = new RelayCommand(() =>
+            {
+                var value = ConfigInfo.Volume - 0.05;
+                if (value >= 0)
+                {
+                    ConfigInfo.Volume = value;
+                    MusicPlayHelper.SetVolume(ConfigInfo.Volume);
+                }
             });
             PlayProgressChangedCommand = new RelayCommand(() =>
             {

@@ -24,6 +24,19 @@
             <i:InvokeCommandAction Command="{Binding WindowClosingCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding PlayPauseCommand}" Key="Space"/>
+        <KeyBinding Command="{Binding StopCommand}" Modifiers="Ctrl" Key="S"/>
+        <KeyBinding Command="{Binding LyricCommand}" Modifiers="Ctrl" Key="L"/>
+        <KeyBinding Command="{Binding PrevCommand}" Modifiers="Ctrl" Key="Left"/>
+        <KeyBinding Command="{Binding NextCommand}" Modifiers="Ctrl" Key="Right"/>
+        <KeyBinding Command="{Binding VolumeAddCommand}" Modifiers="Ctrl" Key="Up"/>
+        <KeyBinding Command="{Binding VolumeSubtractCommand}" Modifiers="Ctrl" Key="Down"/>
+        <KeyBinding Command="{Binding AddMusicFileCommand}" Modifiers="Ctrl" Key="A"/>
+        <KeyBinding Command="{Binding AddMusicFolderCommand}" Modifiers="Ctrl+Shift" Key="A"/>
+        <KeyBinding Command="{Binding DeleteSelectMusicCommand}" Modifiers="Ctrl" Key="D"/>
+        <KeyBinding Command="{Binding ChangePlayModeCommand}" Modifiers="Ctrl" Key="P"/>
+    </Window.InputBindings>
     <Grid Style="{StaticResource MainGridStyle}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
